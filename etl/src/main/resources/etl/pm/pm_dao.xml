@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- dao定义 -->
+	
+	<bean id="pmDataSourceDao" class="com.yinker.etl.pm.dao.PmDataSourceDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="pmOperationLogDao" class="com.yinker.etl.pm.dao.PmOperationLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="pmKettleTransLogDao" class="com.yinker.etl.pm.dao.PmKettleTransLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="pmKettleStepsLogDao" class="com.yinker.etl.pm.dao.PmKettleStepsLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="pmErrorRecordLogDao" class="com.yinker.etl.pm.dao.PmErrorRecordLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="pmKettleJobLogDao" class="com.yinker.etl.pm.dao.PmKettleJobLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="pmKettleJobItemLogDao" class="com.yinker.etl.pm.dao.PmKettleJobItemLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="pmRuntransErrorLogDao" class="com.yinker.etl.pm.dao.PmRuntransErrorLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pmErrorTableStructureLogDao" class="com.yinker.etl.pm.dao.PmErrorTableStructureLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pmMongoTransferBatchLogDao" class="com.yinker.etl.pm.dao.PmMongoTransferBatchLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pmMongoTransferTableNameInfoDao" class="com.yinker.etl.pm.dao.PmMongoTransferTableNameInfoDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pmGroupDao" class="com.yinker.etl.pm.dao.PmGroupDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pmGroupUserDao" class="com.yinker.etl.pm.dao.PmGroupUserDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pmDatasourceGroupDao" class="com.yinker.etl.pm.dao.PmDatasourceGroupDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pmKettleChannelLogDao" class="com.yinker.etl.pm.dao.PmKettleChannelLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pmMailTemplateDao" class="com.yinker.etl.pm.dao.PmMailTemplateDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pmMailUserDao" class="com.yinker.etl.pm.dao.PmMailUserDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pmMailSendLogDao" class="com.yinker.etl.pm.dao.PmMailSendLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pmSystemInfoLogDao" class="com.yinker.etl.pm.dao.PmSystemInfoLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pmMailServerConfigDao" class="com.yinker.etl.pm.dao.PmMailServerConfigDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+</beans>

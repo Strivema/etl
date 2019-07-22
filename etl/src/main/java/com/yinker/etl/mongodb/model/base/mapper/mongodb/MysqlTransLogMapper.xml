@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="SelectMysql">
+
+	<select id="selectList" parameterType="java.util.Map"
+		resultType="map">
+        <![CDATA[
+            select * from ${tableName} LIMIT ${step}
+        ]]>
+	</select>
+
+	<select id="selectMysqlByOrder" parameterType="java.util.Map"
+			resultType="map">
+		<![CDATA[
+            select * from ${tableName} ORDER BY ${retentionColumn} ASC LIMIT ${step}
+        ]]>
+	</select>
+
+	<select id="selectMysqlLimit" parameterType="java.util.Map"
+			resultType="map">
+		<![CDATA[
+            select * from ${tableName} LIMIT ${index},${index2}
+        ]]>
+	</select>
+	
+	<select id="selectNum"  parameterType="java.util.Map" resultType="int">
+        <![CDATA[
+            select count(1) from ${tableName}
+        ]]>
+	</select>
+
+	<select id="selectNumBeforeDay"  parameterType="java.util.Map" resultType="int">
+		<![CDATA[
+            select count(1) from ${tableName} WHERE ${retentionColumn} <= '${retentionDate}'
+        ]]>
+	</select>
+
+	<select id="selectTablesList" parameterType="java.util.Map"
+		resultType="map">
+        <![CDATA[
+            select table_name from ${tableName}
+        ]]>
+	</select>
+
+	<insert id="insertLogBatch" parameterType="java.util.Map">
+	    <![CDATA[
+            insert into pm_mongo_transfer_batch_log(batch_id, start_time, end_time, create_time, last_update_time, operator)
+               values('${batchId}', '${startSysTime}', '${endSysTime}', '${createTime}', '${lastUpdateTime}', '${operator}')
+        ]]>
+	</insert>
+
+
+	<delete id="delete" parameterType="java.util.Map">
+	    <![CDATA[
+	        delete from ${tableName} LIMIT ${step}
+	    ]]>
+	</delete>
+
+	<delete id="deleteByOrder" parameterType="java.util.Map">
+		<![CDATA[
+	        delete from ${tableName} ORDER BY ${retentionColumn} ASC LIMIT ${step}
+	    ]]>
+	</delete>
+
+	<update id="updateLogBatch" parameterType="java.util.Map">
+		update pm_mongo_transfer_batch_log
+		<set>
+			<if test="boolException != null">
+				bool_exception = '${boolException}',
+			</if>
+			<if test="remark != null">
+				remark = '${remark}',
+			</if>
+			<if test="endSysTime != null">
+				end_time = '${endSysTime}',
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time = '${lastUpdateTime}'
+			</if>
+		</set>
+		where batch_id = '${batchId}'
+	</update>
+</mapper>

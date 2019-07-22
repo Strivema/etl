@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- action定义 -->
+	
+	<bean id="pmDataSourceAction" class="com.yinker.etl.pm.action.PmDataSourceAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmDataSourceService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+	
+	<bean id="pmOperationLogAction" class="com.yinker.etl.pm.action.PmOperationLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmOperationLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+	
+	<bean id="pmKettleTransLogAction" class="com.yinker.etl.pm.action.PmKettleTransLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmKettleTransLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+	
+	<bean id="pmKettleStepsLogAction" class="com.yinker.etl.pm.action.PmKettleStepsLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmKettleStepsLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+	
+	<bean id="pmErrorRecordLogAction" class="com.yinker.etl.pm.action.PmErrorRecordLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmErrorRecordLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+	
+	<bean id="pmKettleJobLogAction" class="com.yinker.etl.pm.action.PmKettleJobLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmKettleJobLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+	
+	<bean id="pmKettleJobItemLogAction" class="com.yinker.etl.pm.action.PmKettleJobItemLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmKettleJobItemLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+	
+	<bean id="pmRuntransErrorLogAction" class="com.yinker.etl.pm.action.PmRuntransErrorLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmRuntransErrorLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+
+	<bean id="pmErrorTableStructureLogAction" class="com.yinker.etl.pm.action.PmErrorTableStructureLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmErrorTableStructureLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+
+	<bean id="pmMongoTransferBatchLogAction" class="com.yinker.etl.pm.action.PmMongoTransferBatchLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmMongoTransferBatchLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+
+	<bean id="pmMongoTransferTableNameInfoAction" class="com.yinker.etl.pm.action.PmMongoTransferTableNameInfoAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmMongoTransferTableNameInfoService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+
+	<bean id="pmGroupAction" class="com.yinker.etl.pm.action.PmGroupAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmGroupService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+
+	<bean id="pmGroupUserAction" class="com.yinker.etl.pm.action.PmGroupUserAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmGroupUserService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+
+	<bean id="pmDatasourceGroupAction" class="com.yinker.etl.pm.action.PmDatasourceGroupAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmDatasourceGroupService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+
+	<bean id="pmKettleChannelLogAction" class="com.yinker.etl.pm.action.PmKettleChannelLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmKettleChannelLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+
+	<bean id="pmMailTemplateAction" class="com.yinker.etl.pm.action.PmMailTemplateAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmMailTemplateService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+
+	<bean id="pmMailUserAction" class="com.yinker.etl.pm.action.PmMailUserAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmMailUserService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+
+	<bean id="pmMailSendLogAction" class="com.yinker.etl.pm.action.PmMailSendLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmMailSendLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+
+	<bean id="pmSystemInfoLogAction" class="com.yinker.etl.pm.action.PmSystemInfoLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmSystemInfoLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+
+	<bean id="pmMailServerConfigAction" class="com.yinker.etl.pm.action.PmMailServerConfigAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="pmMailServerConfigService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerPm" />
+	</bean>
+</beans>

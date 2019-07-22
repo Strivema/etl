@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- namespace命名规则：项目或者构件的英文简写-->
+<mapper namespace="etl">
+	<resultMap id="TransInfoRM" type="com.yinker.etl.trans.model.base.TransInfo">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transName" column="trans_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="simpleName" column="simple_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transType" column="trans_type" javaType="String" jdbcType="CHAR"/>
+		<result property="srcDbId" column="src_db_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="srcDbCode" column="src_db_code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="srcTbCode" column="src_tb_code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="srcDescript" column="src_descript" javaType="String" jdbcType="VARCHAR"/>
+		<result property="targetDescript" column="target_descript" javaType="String" jdbcType="VARCHAR"/>
+		<result property="targetDbId" column="target_db_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="targetDbCode" column="target_db_code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="targetTbCode" column="target_tb_code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="whereStr" column="whereStr" javaType="String" jdbcType="VARCHAR"/>
+		<result property="isEnable" column="is_enable" javaType="String" jdbcType="CHAR"/>
+		<result property="isSyncTable" column="is_sync_table" javaType="String" jdbcType="CHAR"/>
+		<result property="isDiyQuartz" column="is_diy_quartz" javaType="String" jdbcType="CHAR"/>
+		<result property="type" column="type" javaType="String" jdbcType="VARCHAR"/>
+		<result property="cron" column="cron" javaType="String" jdbcType="VARCHAR"/>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"/>
+		<result property="owner" column="owner" javaType="String" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateDate" column="last_update_date" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="vindicator" column="vindicator" javaType="String" jdbcType="VARCHAR"/>
+		<result property="vindicatorMail" column="vindicator_mail" javaType="String" jdbcType="VARCHAR"/>
+		<association property="pmDataSourceSrcInfo" column="{id=src_db_id}" select="PmDataSource.selectByPK"/>
+		<association property="pmDataSourceTargetInfo" column="{id=target_db_id}" select="PmDataSource.selectByPK"/>
+	</resultMap>
+	<resultMap id="TransConfigChangeLogRM" type="com.yinker.etl.trans.model.base.TransConfigChangeLog">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="userId" column="user_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="tableName" column="table_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="operateLog" column="operate_log" javaType="String" jdbcType="VARCHAR"/>
+		<result property="operateType" column="operate_type" javaType="String" jdbcType="VARCHAR"/>
+		<result property="operateTime" column="operate_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<association property="rbacUser" column="{id=user_id}" select="RbacUser.selectByPK"/>
+	</resultMap>
+	<resultMap id="TransStatusLogRM" type="com.yinker.etl.trans.model.base.TransStatusLog">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="osName" column="os_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transThread" column="trans_thread" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transId" column="trans_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transName" column="trans_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="beginTime" column="begin_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="endTime" column="end_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="useTime" column="use_time" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="status" column="status" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transLog" column="trans_log" javaType="String" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="batchNo" column="batch_no" javaType="String" jdbcType="VARCHAR"/>
+		<result property="type" column="type" javaType="String" jdbcType="VARCHAR"/>
+		<result property="jobName" column="job_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="tableName" column="table_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transType" column="trans_type" javaType="String" jdbcType="VARCHAR"/>
+		<result property="systemSn" column="system_sn" javaType="String" jdbcType="VARCHAR"/>
+		<result property="implementationRate" column="implementationRate" javaType="Double" jdbcType="DOUBLE"/>
+	</resultMap>
+	<resultMap id="TransTimebatchLogRM" type="com.yinker.etl.trans.model.base.TransTimebatchLog">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="batchNo" column="batch_no" javaType="String" jdbcType="VARCHAR"/>
+		<result property="beginTime" column="begin_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="endTime" column="end_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="useTime" column="use_time" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="tableCount" column="table_count" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="successCount" column="success_count" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="transingCount" column="transing_count" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="exceptionCount" column="exception_count" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="oterRunningCount" column="oter_running_count" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="type" column="type" javaType="String" jdbcType="VARCHAR"/>
+		<result property="jobName" column="job_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="tableName" column="table_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transType" column="trans_type" javaType="String" jdbcType="VARCHAR"/>
+		<collection property="transStatusLogs" column="{batchNo=batch_no}" ofType="java.util.List" select="TransStatusLog.selectByEntity"/>
+	</resultMap>
+	<resultMap id="SyncTableInfoRM" type="com.yinker.etl.trans.model.base.SyncTableInfo">
+		<result property="tableSchema" column="TABLE_SCHEMA" javaType="String" jdbcType="VARCHAR"/>
+		<result property="tableName" column="TABLE_NAME" javaType="String" jdbcType="VARCHAR"/>
+		<result property="columnName" column="COLUMN_NAME" javaType="String" jdbcType="VARCHAR"/>
+		<result property="columnKey" column="COLUMN_KEY" javaType="String" jdbcType="VARCHAR"/>
+		<result property="columnDefault" column="COLUMN_DEFAULT" javaType="String" jdbcType="VARCHAR"/>
+		<result property="isNullable" column="IS_NULLABLE" javaType="String" jdbcType="VARCHAR"/>
+		<result property="dataType" column="DATA_TYPES" javaType="String" jdbcType="VARCHAR"/>
+		<result property="columnType" column="COLUMN_TYPE" javaType="String" jdbcType="VARCHAR"/>
+		<result property="columnComment" column="COLUMN_COMMENT" javaType="String" jdbcType="VARCHAR"/>
+		<result property="keyOrdinalPosition" column="ordinal_position" javaType="String" jdbcType="VARCHAR"/>
+		<result property="extra" column="extra" javaType="String" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="TransTableStructureInfoRM" type="com.yinker.etl.trans.model.base.TransTableStructureInfo">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transName" column="trans_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="simpleName" column="simple_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transType" column="trans_type" javaType="String" jdbcType="CHAR"/>
+		<result property="srcDbId" column="src_db_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="srcDbCode" column="src_db_code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="srcTbCode" column="src_tb_code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="srcDescript" column="src_descript" javaType="String" jdbcType="VARCHAR"/>
+		<result property="targetDbId" column="target_db_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="targetDbCode" column="target_db_code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="targetTbCode" column="target_tb_code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="targetDescript" column="target_descript" javaType="String" jdbcType="VARCHAR"/>
+		<result property="sqlstr" column="sqlStr" javaType="String" jdbcType="VARCHAR"/>
+		<result property="isEnable" column="is_enable" javaType="String" jdbcType="CHAR"/>
+		<result property="isDiyQuartz" column="is_diy_quartz" javaType="String" jdbcType="CHAR"/>
+		<result property="type" column="type" javaType="String" jdbcType="VARCHAR"/>
+		<result property="cron" column="cron" javaType="String" jdbcType="VARCHAR"/>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"/>
+		<result property="owner" column="owner" javaType="String" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateDate" column="last_update_date" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="incrementColumn" column="increment_column" javaType="String" jdbcType="VARCHAR"/>
+		<result property="compareParameter" column="compare_parameter" javaType="String" jdbcType="VARCHAR"/>
+		<result property="vindicator" column="vindicator" javaType="String" jdbcType="VARCHAR"/>
+		<result property="vindicatorMail" column="vindicator_mail" javaType="String" jdbcType="VARCHAR"/>
+		<association property="pmDataSourceSrcInfo" column="{id=src_db_id}" select="PmDataSource.selectByPK"/>
+		<association property="pmDataSourceTargetInfo" column="{id=target_db_id}" select="PmDataSource.selectByPK"/>
+	</resultMap>
+	<resultMap id="TransWarnConfigRM" type="com.yinker.etl.trans.model.base.TransWarnConfig">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transId" column="trans_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="safeTime" column="safe_time" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="status" column="status" javaType="String" jdbcType="VARCHAR"/>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<resultMap id="TransStuInfoRM" type="com.yinker.etl.trans.model.base.TransStuInfo">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="stuNo" column="stu_no" javaType="Integer" jdbcType="VARCHAR"/>
+		<result property="stuName" column="stu_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="stuGender" column="stu_gender" javaType="String" jdbcType="CHAR"/>
+		<result property="stuMajor" column="stu_major" javaType="String" jdbcType="VARCHAR"/>
+		<result property="stuBirth" column="stu_birth" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="stuEnrolTime" column="stu_enrol_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+	</resultMap>
+</mapper>

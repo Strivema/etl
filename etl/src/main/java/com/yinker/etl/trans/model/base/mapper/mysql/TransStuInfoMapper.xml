@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="TransStuInfo">
+    <!-- 表的所有字段 -->
+    <sql id="allColumns">
+        <![CDATA[
+
+
+			id,
+			stu_no,
+			stu_name,
+			stu_gender,
+			stu_clazz
+			stu_major
+			stu_birth
+			stu_enrol_time
+			create_time,
+			last_update_time,
+
+
+
+        ]]>
+    </sql>
+
+    <!-- 表的主键字段 -->
+    <sql id="pkColumns">
+        <![CDATA[
+
+
+			id
+
+
+        ]]>
+    </sql>
+
+    <!-- 根据实体的查询对象进行查询的sql -->
+    <sql id="querySql">
+        select
+        <include refid="allColumns"/>
+        from trans_stu_info
+        <where>
+            <if test="id != null and id != ''">
+                <![CDATA[and id = #{id}]]>
+            </if>
+            <if test="stuNo != null and stuNo != ''">
+                <![CDATA[and stu_no = #{stuNo}]]>
+            </if>
+            <if test="stuName != null and stuName != ''">
+                <![CDATA[and stu_name = #{stuName}]]>
+            </if>
+            <if test="stuGender != null and stuGender != ''">
+                <![CDATA[and stu_gender = #{stuGender}]]>
+            </if>
+            <if test="stuClazz != null and stuClazz != ''">
+                <![CDATA[and stu_clazz = #{stuClazz}]]>
+            </if>
+            <if test="stuBirth != null">
+                <![CDATA[and stu_birth = #{stuBirth}]]>
+            </if>
+
+            <if test="stuEnrolTime != null">
+                <![CDATA[and stu_enrol_time = #{stuEnrolTime}]]>
+            </if>
+            <if test="createTime != null">
+                <![CDATA[and create_time = #{createTime}]]>
+            </if>
+           <!-- <if test="createTimeStart != null">
+                <![CDATA[and create_time >= #{createTimeStart}]]>
+            </if>-->
+            <!--<if test="createTimeEnd != null">
+                <![CDATA[and create_time <= #{createTimeEnd}]]>
+            </if>-->
+            <if test="lastUpdateTime != null">
+                <![CDATA[and last_update_time = #{lastUpdateTime}]]>
+            </if>
+          <!--  <if test="lastUpdateTimeStart != null">
+                <![CDATA[and last_update_time >= #{lastUpdateTimeStart}]]>
+            </if>
+            <if test="lastUpdateTimeEnd != null">
+                <![CDATA[and last_update_time <= #{lastUpdateTimeEnd}]]>
+            </if>-->
+        </where>
+    </sql>
+
+    <!-- 新增数据 -->
+    <insert id="insert" parameterType="com.yinker.etl.trans.model.base.TransStuInfo">
+        <![CDATA[
+
+
+			insert into trans_stu_info (
+				id,
+				stu_no,
+				stu_name,
+			    stu_gender,
+				stu_clazz,
+				stu_major,
+				stu_birth,
+				stu_enrol_time,
+				create_time,
+				last_update_time,
+			) values (
+				#{id},
+				#{stuNo},
+				#{stuName},
+				#{stuGender},
+				#{stuClazz},
+				#{stuMajor},
+				#{stuBirth},
+				#{stuEnrolTime},
+				#{createTime},
+				#{lastUpdateTime}
+			)
+        ]]>
+    </insert>
+
+    <!-- 根据主键删除数据 -->
+    <delete id="deleteByPK" parameterType="com.yinker.etl.trans.model.base.TransStuInfoPK">
+        <![CDATA[
+			delete from trans_stu_info
+				where
+				id= #{id}
+        ]]>
+    </delete>
+
+    <!-- 根据主键更新数据 -->
+    <update id="updateByPK" parameterType="com.yinker.etl.trans.model.base.TransStuInfo">
+        update trans_stu_info
+        <set>
+            <if test="stuNo != null"><![CDATA[stu_no = #{stuNo},]]></if>
+            <if test="stuName != null"><![CDATA[stu_name = #{stuName},]]></if>
+            <if test="stuGender != null"><![CDATA[stu_gender = #{tstuGender},]]></if>
+            <if test="stuClazz != null"><![CDATA[stu_clazz = #{stuClazz},]]></if>
+            <if test="stuMajor != null"><![CDATA[stu_major = #{stuMajor},]]></if>
+            <if test="stuBirth != null"><![CDATA[stu_birth = #{stuBirth},]]></if>
+            <if test="stuEnrolTime != null"><![CDATA[stu_enrol_time = #{stuEnrolTime},]]></if>
+            <if test="createTime != null"><![CDATA[create_time = #{createTime},]]></if>
+            <if test="lastUpdateTime != null"><![CDATA[last_update_time = #{lastUpdateTime},]]></if>
+        </set>
+        where
+        id=#{id}
+    </update>
+
+    <!-- 根据主键查询对象 -->
+    <select id="selectByPK" parameterType="com.yinker.etl.trans.model.base.TransStuInfoPK" resultMap="etl.TransStuInfoRM">
+        select
+        <include refid="allColumns"/>
+        <![CDATA[
+			from trans_stu_info
+			where
+				stu_no=#{stuNo}
+	    ]]>
+    </select>
+
+    <!-- 根据实体对象查询数据结果集 -->
+    <select id="selectByEntity" parameterType="com.yinker.etl.trans.model.TransStuInfoQuery" resultMap="etl.TransStuInfoRM">
+        <include refid="querySql"/>
+        <if test="sortColumns != null and sortColumns != ''">
+            order by ${sortColumns}
+        </if>
+    </select>
+
+    <!-- 分页查询 -查询结果数据 -->
+    <select id="selectByPage" parameterType="com.yinker.etl.trans.model.TransStuInfoQuery" resultMap="etl.TransStuInfoRM">
+        <include refid="querySql"/>
+        <if test="sortColumns != null and sortColumns != ''">
+            order by ${sortColumns}
+        </if>
+    </select>
+
+    <!-- 分页查询 -查询记录总数 -->
+    <select id="selectByPageCount" parameterType="com.yinker.etl.trans.model.TransStuInfoQuery" resultType="integer">
+        select count(id) from (
+        <include refid="querySql"/>
+        ) as tmp_trans_stu_info
+    </select>
+
+    <!-- 查询大于批号的数据 -->
+    <!--<select id="selectAllByBathch" parameterType="com.yinker.etl.trans.model.TransStatusLogQuery" resultMap="etl.TransStatusLogRM">
+        select
+        <include refid="allColumns"/>
+        from trans_status_log where
+        <if test="batchNo != null"> <![CDATA[batch_no > #{batchNo} and]]> </if>
+        <![CDATA[ batch_no IS NOT NULL AND batch_no <> '' ORDER BY batch_no ASC,begin_time ASC ]]>
+    </select>-->
+
+    <!-- 查询指定时间范围内最大几条跑批信息 -->
+   <!-- <select id="selectUseTimeMaxTrans" parameterType="com.yinker.etl.trans.model.TransStatusLogQuery" resultMap="etl.TransStatusLogRM">
+        select
+        <include refid="allColumns"/>
+        <![CDATA[from (
+			SELECT a.*
+            FROM
+                trans_status_log a
+            LEFT JOIN trans_info b ON a.trans_id = b.id
+            WHERE
+                b.id IS NOT NULL ]]>
+        <if test="targetDBArray != null and targetDBArray.length > 0 ">
+            <![CDATA[and ( b.target_db_id in ]]>
+            <foreach item="item" index="index" collection="targetDBArray" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <![CDATA[ )]]>
+        </if>
+        <if test="srcDBArray != null  and srcDBArray.length > 0 ">
+            <![CDATA[and ( b.src_db_id in ]]>
+            <foreach item="item" index="index" collection="srcDBArray" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <![CDATA[ )]]>
+        </if>
+        <![CDATA[
+            AND a.begin_time >= #{beginTimeStart}
+            AND a.begin_time <= #{beginTimeEnd}
+            AND a.`status` = '2'
+            ORDER BY
+			a.use_time DESC
+		) as log GROUP BY log.trans_id ORDER BY log.use_time desc ]]>
+        <if test="selectCount != null">
+            <![CDATA[ limit #{selectCount}]]>
+        </if>
+    </select>
+
+    &lt;!&ndash; 查询指定时间范围内平均跑批时间最长的几条转换 &ndash;&gt;
+    <select id="selectUseTimeAvgTrans" parameterType="com.yinker.etl.trans.model.TransStatusLogQuery" resultMap="etl.TransStatusLogRM">
+        <![CDATA[select * from (
+        SELECT
+        a.trans_name,round(avg(a.use_time),2) as use_time
+        FROM
+        trans_status_log a
+        LEFT JOIN trans_info b ON a.trans_id = b.id
+        WHERE
+        b.id IS NOT NULL ]]>
+        <if test="targetDBArray != null and targetDBArray.length > 0 ">
+            <![CDATA[and ( b.target_db_id in ]]>
+            <foreach item="item" index="index" collection="targetDBArray" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <![CDATA[ )]]>
+        </if>
+        <if test="srcDBArray != null  and srcDBArray.length > 0 ">
+            <![CDATA[and ( b.src_db_id in ]]>
+            <foreach item="item" index="index" collection="srcDBArray" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <![CDATA[ )]]>
+        </if>
+        <![CDATA[
+            AND a.begin_time >= #{beginTimeStart}
+            AND a.begin_time <= #{beginTimeEnd}
+            AND a.`status` = '2'
+			GROUP BY a.trans_id ) as log ORDER BY log.use_time DESC
+			]]>
+        <if test="selectCount != null">
+            <![CDATA[ limit #{selectCount}]]>
+        </if>
+    </select>
+
+    &lt;!&ndash; 查询指定时间范围内平均跑批时间最长的几条转换 &ndash;&gt;
+    <select id="selectImplementationRate" parameterType="com.yinker.etl.trans.model.TransStatusLogQuery" resultMap="etl.TransStatusLogRM">
+        <![CDATA[
+            select errorCount.trans_name,ROUND(errorCount.use_time / allCount.use_time * 100,2) as implementationRate from (
+                SELECT
+                a.trans_id ,a.trans_name,count(1) as use_time
+                FROM
+                trans_status_log a
+                LEFT JOIN trans_info b ON a.trans_id = b.id
+                WHERE
+                b.id IS NOT NULL
+                ]]>
+        <if test="targetDBArray != null and targetDBArray.length > 0 ">
+            <![CDATA[and ( b.target_db_id in ]]>
+            <foreach item="item" index="index" collection="targetDBArray" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <![CDATA[ )]]>
+        </if>
+        <if test="srcDBArray != null  and srcDBArray.length > 0 ">
+            <![CDATA[and ( b.src_db_id in ]]>
+            <foreach item="item" index="index" collection="srcDBArray" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <![CDATA[ )]]>
+        </if>
+        <![CDATA[AND a.`status` = #{status} GROUP BY a.trans_id
+            ) as errorCount LEFT JOIN (
+                SELECT
+                a.trans_id ,a.trans_name,count(1) as use_time
+                FROM
+                trans_status_log a
+                LEFT JOIN trans_info b ON a.trans_id = b.id
+                WHERE
+                b.id IS NOT NULL
+                ]]>
+        <if test="targetDBArray != null and targetDBArray.length > 0 ">
+            <![CDATA[and ( b.target_db_id in ]]>
+            <foreach item="item" index="index" collection="targetDBArray" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <![CDATA[ )]]>
+        </if>
+        <if test="srcDBArray != null  and srcDBArray.length > 0 ">
+            <![CDATA[and ( b.src_db_id in ]]>
+            <foreach item="item" index="index" collection="srcDBArray" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <![CDATA[ )]]>
+        </if>
+        <![CDATA[GROUP BY a.trans_id
+            ) as allCount on errorCount.trans_id  = allCount.trans_id
+            ORDER BY implementationRate desc
+        ]]>
+        <if test="selectCount != null">
+            <![CDATA[ limit #{selectCount}]]>
+        </if>
+    </select>
+-->
+
+</mapper>

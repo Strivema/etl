@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <!-- 主键生成器配置 -->
+    <bean id="etlKeyGeneratorContainerPm" class="org.zwork.common.key.KeyGeneratorContainer">
+        <!-- 数据源配置 -->
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+        <!-- 序列键数据上下文 -->
+        <property name="context">
+            <map>
+                <entry key="keyGeneratorContext">
+                    <ref bean="etlKeyGeneratorContext"/>
+                </entry>
+            </map>
+        </property>
+
+        <!-- 定义序列键生成器 -->
+        <property name="keyGeneratorConfigs">
+            <map>
+                <entry key="pmDataSourceId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_data_source:id'/>
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s'/>
+                        <property name="length" value="20"/>
+                    </bean>
+                </entry>
+                <entry key="pmOperationLogId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_operation_log:id'/>
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s'/>
+                        <property name="length" value="20"/>
+                    </bean>
+                </entry>
+                <entry key="pmKettleTransLogId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_kettle_trans_log:id'/>
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s'/>
+                        <property name="length" value="20"/>
+                    </bean>
+                </entry>
+                <entry key="pmKettleStepsLogId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_kettle_steps_log:id'/>
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s'/>
+                        <property name="length" value="20"/>
+                    </bean>
+                </entry>
+                <entry key="pmKettleJobItemLogId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_kettle_job_item_log:id'/>
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s'/>
+                        <property name="length" value="20"/>
+                    </bean>
+                </entry>
+                <entry key="pmErrorTableStructureLogId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_error_table_structure_log:id'/>
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s'/>
+                        <property name="length" value="20"/>
+                    </bean>
+                </entry>
+                <entry key="pmMongoTransferBatchLogId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='etl_mongo_transfer_batch_log:id'/>
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s'/>
+                        <property name="length" value="20"/>
+                    </bean>
+                </entry>
+                <entry key="pmMongoTransferTableNameInfoId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='etl_mongo_transfer_table_name_info:id'/>
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s'/>
+                        <property name="length" value="20"/>
+                    </bean>
+                </entry>
+                <entry key="pmGroupId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_group:id'/>
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s'/>
+                        <property name="length" value="20"/>
+                    </bean>
+                </entry>
+                <entry key="pmGroupUserId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_group_user:id'/>
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s'/>
+                        <property name="length" value="20"/>
+                    </bean>
+                </entry>
+                <entry key="pmDatasourceGroupId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_datasource_group:id'/>
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s'/>
+                        <property name="length" value="20"/>
+                    </bean>
+                </entry>
+                <entry key="pmMailTemplateId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_mail_template:id' />
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s' />
+                        <property name="length" value="20" />
+                    </bean>
+                </entry>
+                <entry key="pmMailUserId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_mail_user:id' />
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s' />
+                        <property name="length" value="20" />
+                    </bean>
+                </entry>
+                <entry key="pmMailSendLogId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_mail_send_log:id' />
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s' />
+                        <property name="length" value="20" />
+                    </bean>
+                </entry>
+                <entry key="pmSystemInfoLogId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_system_info_log:id' />
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s' />
+                        <property name="length" value="20" />
+                    </bean>
+                </entry>
+                <entry key="pmMailServerConfigId">
+                    <bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+                        <property name="condition" value='pm_mail_server_config:id' />
+                        <!-- 默认为20位顺序号 -->
+                        <property name="keyPattern" value='%s' />
+                        <property name="length" value="20" />
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+</beans>

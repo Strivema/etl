@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="PmErrorTableStructureLog">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			id,
+			err_trans_id,
+			err_trans_name,
+			err_table_name,
+			err_column_name,
+			err_status,
+			err_create_time,
+			err_desc,
+			remark
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from pm_error_table_structure_log
+			<where>	      				
+				<if test="id != null and id != ''">
+					<![CDATA[and id = #{id}]]>
+				</if>
+				<if test="errTransId != null and errTransId != ''">
+					<![CDATA[and err_trans_id = #{errTransId}]]>
+				</if>
+				<if test="errTransName != null and errTransName != ''">
+					<![CDATA[and err_trans_name = #{errTransName}]]>
+				</if>
+				<if test="errTableName != null and errTableName != ''">
+					<![CDATA[and err_table_name = #{errTableName}]]>
+				</if>
+				<if test="errColumnName != null and errColumnName != ''">
+					<![CDATA[and err_column_name = #{errColumnName}]]>
+				</if>
+				<if test="errStatus != null and errStatus != ''">
+					<![CDATA[and err_status = #{errStatus}]]>
+				</if>
+				<if test="errCreateTime != null">
+					<![CDATA[and err_create_time = #{errCreateTime}]]>
+				</if>
+				<if test="errCreateTimeStart != null">
+					<![CDATA[and err_create_time >= #{errCreateTimeStart}]]>
+				</if>
+				<if test="errCreateTimeEnd != null">
+					<![CDATA[and err_create_time <= #{errCreateTimeEnd}]]>
+				</if>
+				<if test="errDesc != null and errDesc != ''">
+					<![CDATA[and err_desc = #{errDesc}]]>
+				</if>
+				<if test="remark != null and remark != ''">
+					<![CDATA[and remark = #{remark}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.yinker.etl.pm.model.base.PmErrorTableStructureLog">
+	    <![CDATA[
+			insert into pm_error_table_structure_log (
+				id,
+				err_trans_id,
+				err_trans_name,
+				err_table_name,
+				err_column_name,
+				err_status,
+				err_create_time,
+				err_desc,
+				remark
+			) values (
+				#{id},
+				#{errTransId},
+				#{errTransName},
+				#{errTableName},
+				#{errColumnName},
+				#{errStatus},
+				#{errCreateTime},
+				#{errDesc},
+				#{remark}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据主键删除数据 -->
+    <delete id="deleteByPK" parameterType="com.yinker.etl.pm.model.base.PmErrorTableStructureLogPK">
+        <![CDATA[
+			delete from pm_error_table_structure_log 
+				where
+				id=#{id}
+    	]]>
+    </delete>
+   
+	<!-- 根据主键更新数据 -->
+	<update id="updateByPK" parameterType="com.yinker.etl.pm.model.base.PmErrorTableStructureLog">
+		update pm_error_table_structure_log 
+			<set>
+				<if test="errTransId != null"><![CDATA[err_trans_id = #{errTransId},]]></if>
+				<if test="errTransName != null"><![CDATA[err_trans_name = #{errTransName},]]></if>
+				<if test="errTableName != null"><![CDATA[err_table_name = #{errTableName},]]></if>
+				<if test="errColumnName != null"><![CDATA[err_column_name = #{errColumnName},]]></if>
+				<if test="errStatus != null"><![CDATA[err_status = #{errStatus},]]></if>
+				<if test="errCreateTime != null"><![CDATA[err_create_time = #{errCreateTime},]]></if>
+				<if test="errDesc != null"><![CDATA[err_desc = #{errDesc},]]></if>
+				<if test="remark != null"><![CDATA[remark = #{remark},]]></if>
+			</set>
+		where 
+			id=#{id}
+	</update>
+	
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPK" parameterType="com.yinker.etl.pm.model.base.PmErrorTableStructureLogPK" resultMap="etl.PmErrorTableStructureLogRM">
+        select <include refid="allColumns" />
+	    <![CDATA[
+			from pm_error_table_structure_log 
+			where 
+				id=#{id}
+	    ]]>
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.yinker.etl.pm.model.PmErrorTableStructureLogQuery" resultMap="etl.PmErrorTableStructureLogRM">
+		<include refid="querySql"/>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.yinker.etl.pm.model.PmErrorTableStructureLogQuery" resultMap="etl.PmErrorTableStructureLogRM">
+		<include refid="querySql"/>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.yinker.etl.pm.model.PmErrorTableStructureLogQuery" resultType="integer">
+		select count(id) from ( <include refid="querySql"/> ) as tmp_pm_error_table_structure_log
+	</select>
+	
+</mapper>

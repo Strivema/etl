@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- dao定义 -->
+
+	<!-- 转换日志处理DAO -->
+	<bean id="mongoDBPmErrorRecordLogDao" class="com.yinker.etl.mongodb.dao.impl.MongoDBPmErrorRecordLogDaoImpl" >
+		<property name="mongoTemplate" ref="mongoTemplate" />
+	</bean>
+	<!-- 转换日志处理DAO -->
+	<bean id="mongoDBPmKettleTransLogDao" class="com.yinker.etl.mongodb.dao.impl.MongoDBPmKettleTransLogDaoImpl" >
+		<property name="mongoTemplate" ref="mongoTemplate" />
+	</bean>
+	
+	<!-- 步骤日志处理DAO -->
+	<bean id="mongoDBPmKettleStepsLogDao" class="com.yinker.etl.mongodb.dao.impl.MongoDBPmKettleStepsLogDaoImpl" >
+		<property name="mongoTemplate" ref="mongoTemplate" />
+	</bean>
+	
+	<bean id="mongoDBPmKettleJobItemLogDao" class="com.yinker.etl.mongodb.dao.impl.MongoDBPmKettleJobItemLogDaoImpl" >
+		<property name="mongoTemplate" ref="mongoTemplate" />
+	</bean>
+
+	<!-- 作业日志 -->
+	<bean id="mongoDBPmKettleJobLogDao" class="com.yinker.etl.mongodb.dao.impl.MongoDBPmKettleJobLogDaoImpl" >
+		<property name="mongoTemplate" ref="mongoTemplate" />
+	</bean>
+	
+	<!-- MYSQL TO MONGO -->
+	
+	<bean id="mongoDBLogDao" class="com.yinker.etl.mongodb.dao.impl.MongoDBLogDaoImpl" >
+		<property name="mongoTemplate" ref="mongoTemplate" />
+	</bean>
+
+	<!-- mybaitis sqlsession -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	<constructor-arg index="0" ref="sqlSessionFactory"/>
+</bean>
+	<!--<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
+		<constructor-arg index="0" ref="sqlSessionFactory"/>
+	</bean>-->
+    
+</beans>

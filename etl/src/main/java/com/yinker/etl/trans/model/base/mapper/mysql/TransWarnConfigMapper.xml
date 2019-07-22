@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="TransWarnConfig">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			id,
+			trans_id,
+			safe_time,
+			status,
+			remark,
+			create_time,
+			last_update_time
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from trans_warn_config
+			<where>	      				
+				<if test="id != null and id != ''">
+					<![CDATA[and id = #{id}]]>
+				</if>
+				<if test="transId != null and transId != ''">
+					<![CDATA[and trans_id = #{transId}]]>
+				</if>
+				<if test="safeTime != null">
+					<![CDATA[and safe_time = #{safeTime}]]>
+				</if>
+				<if test="safeTimeStart != null">
+					<![CDATA[and safe_time >= #{safeTimeStart}]]>
+				</if>
+				<if test="safeTimeEnd != null">
+					<![CDATA[and safe_time <= #{safeTimeEnd}]]>
+				</if>
+				<if test="status != null and status != ''">
+					<![CDATA[and status = #{status}]]>
+				</if>
+				<if test="remark != null and remark != ''">
+					<![CDATA[and remark = #{remark}]]>
+				</if>
+				<if test="createTime != null">
+					<![CDATA[and create_time = #{createTime}]]>
+				</if>
+				<if test="createTimeStart != null">
+					<![CDATA[and create_time >= #{createTimeStart}]]>
+				</if>
+				<if test="createTimeEnd != null">
+					<![CDATA[and create_time <= #{createTimeEnd}]]>
+				</if>
+				<if test="lastUpdateTime != null">
+					<![CDATA[and last_update_time = #{lastUpdateTime}]]>
+				</if>
+				<if test="lastUpdateTimeStart != null">
+					<![CDATA[and last_update_time >= #{lastUpdateTimeStart}]]>
+				</if>
+				<if test="lastUpdateTimeEnd != null">
+					<![CDATA[and last_update_time <= #{lastUpdateTimeEnd}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.yinker.etl.trans.model.base.TransWarnConfig">
+	    <![CDATA[
+			insert into trans_warn_config (
+				id,
+				trans_id,
+				safe_time,
+				status,
+				remark,
+				create_time,
+				last_update_time
+			) values (
+				#{id},
+				#{transId},
+				#{safeTime},
+				#{status},
+				#{remark},
+				#{createTime},
+				#{lastUpdateTime}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据主键删除数据 -->
+    <delete id="deleteByPK" parameterType="com.yinker.etl.trans.model.base.TransWarnConfigPK">
+        <![CDATA[
+			delete from trans_warn_config 
+				where
+				id=#{id}
+    	]]>
+    </delete>
+   
+	<!-- 根据主键更新数据 -->
+	<update id="updateByPK" parameterType="com.yinker.etl.trans.model.base.TransWarnConfig">
+		update trans_warn_config 
+			<set>
+				<if test="transId != null"><![CDATA[trans_id = #{transId},]]></if>
+				<if test="safeTime != null"><![CDATA[safe_time = #{safeTime},]]></if>
+				<if test="status != null"><![CDATA[status = #{status},]]></if>
+				<if test="remark != null"><![CDATA[remark = #{remark},]]></if>
+				<if test="createTime != null"><![CDATA[create_time = #{createTime},]]></if>
+				<if test="lastUpdateTime != null"><![CDATA[last_update_time = #{lastUpdateTime},]]></if>
+			</set>
+		where 
+			id=#{id}
+	</update>
+	
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPK" parameterType="com.yinker.etl.trans.model.base.TransWarnConfigPK" resultMap="etl.TransWarnConfigRM">
+        select <include refid="allColumns" />
+	    <![CDATA[
+			from trans_warn_config 
+			where 
+				id=#{id}
+	    ]]>
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.yinker.etl.trans.model.TransWarnConfigQuery" resultMap="etl.TransWarnConfigRM">
+		<include refid="querySql"/>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.yinker.etl.trans.model.TransWarnConfigQuery" resultMap="etl.TransWarnConfigRM">
+		<include refid="querySql"/>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.yinker.etl.trans.model.TransWarnConfigQuery" resultType="integer">
+		select count(id) from ( <include refid="querySql"/> ) as tmp_trans_warn_config
+	</select>
+	
+</mapper>

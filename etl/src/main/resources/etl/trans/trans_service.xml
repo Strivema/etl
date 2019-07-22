@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- service定义 -->
+
+    <bean id="transInfoService" class="com.yinker.etl.trans.service.TransInfoService">
+        <property name="modelDao" ref="transInfoDao"/>
+    </bean>
+    <bean id="batchTransInfoService" class="com.yinker.etl.trans.service.BatchTransInfoService" parent="transInfoService">
+    </bean>
+
+    <bean id="transConfigChangeLogService" class="com.yinker.etl.trans.service.TransConfigChangeLogService">
+        <property name="modelDao" ref="transConfigChangeLogDao"/>
+    </bean>
+
+    <bean id="transStatusLogService" class="com.yinker.etl.trans.service.TransStatusLogService">
+        <property name="modelDao" ref="transStatusLogDao"/>
+    </bean>
+
+    <bean id="transTimebatchLogService" class="com.yinker.etl.trans.service.TransTimebatchLogService">
+        <property name="modelDao" ref="transTimebatchLogDao"/>
+    </bean>
+    <!-- trans定义 -->
+    <bean id="simpleTrans" class="com.yinker.etl.trans.service.trans.SimpleTrans" >
+        <property name="pmDataSourceService" ref="pmDataSourceService"/>
+    </bean>
+
+    <!-- Kettle资源库转换 -->
+    <bean id="repositoryMetaTrans" class="com.yinker.etl.trans.service.trans.RepositoryMetaTrans">
+    </bean>
+
+    <bean id="syncTableInfoService" class="com.yinker.etl.trans.service.SyncTableInfoService">
+    </bean>
+
+    <bean id="transTableStructureInfoService" class="com.yinker.etl.trans.service.TransTableStructureInfoService">
+        <property name="modelDao" ref="transTableStructureInfoDao"/>
+    </bean>
+
+    <bean id="batchTransTableStructureInfoService" class="com.yinker.etl.trans.service.BatchTransTableStructureInfoService">
+    </bean>
+
+    <bean id="transWarnConfigService" class="com.yinker.etl.trans.service.TransWarnConfigService">
+        <property name="modelDao" ref="transWarnConfigDao" />
+    </bean>
+    <bean id="transStuInfoService" class="com.yinker.etl.trans.service.TransStuInfoService">
+        <property name="modelDao" ref="transStuInfoDao"/>
+    </bean>
+</beans>

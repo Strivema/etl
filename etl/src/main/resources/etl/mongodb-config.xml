@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 引入MongoDB数据源 -->
+	<import resource="classpath:etl\spring-mongodb.xml"/>
+	
+	<!-- 引入MongoDB Mapper配置 -->
+	<import resource="classpath:com/yinker/etl/mongodb/model/base/mapper/mongodb/MongoDBPmKettleTransLogMapper.xml" />
+	<import resource="classpath:com/yinker/etl/mongodb/model/base/mapper/mongodb/MongoDBPmErrorRecordLogMapper.xml" />
+	<!-- 引入MongoDB Mapper配置 -->
+	<import resource="classpath:com/yinker/etl/mongodb/model/base/mapper/mongodb/MongoDBPmKettleStepsLogMapper.xml" />
+	<import resource="classpath:com/yinker/etl/mongodb/model/base/mapper/mongodb/MongoDBPmKettleTransLogMapper.xml" />
+	<import resource="classpath:com/yinker/etl/mongodb/model/base/mapper/mongodb/MongoDBPmKettleStepsLogMapper.xml" />
+	<import resource="classpath:com/yinker/etl/mongodb/model/base/mapper/mongodb/MongoDBPmKettleJobItemLogMapper.xml" />
+	<import resource="classpath:com/yinker/etl/mongodb/model/base/mapper/mongodb/MongoDBPmKettleJobLogMapper.xml" />
+
+
+</beans>

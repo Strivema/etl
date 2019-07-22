@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- action定义 -->
+	
+	<bean id="transInfoAction" class="com.yinker.etl.trans.action.TransInfoAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="transInfoService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerTrans" />
+	</bean>
+	
+	<bean id="transConfigChangeLogAction" class="com.yinker.etl.trans.action.TransConfigChangeLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="transConfigChangeLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerTrans" />
+	</bean>
+	
+	<bean id="transStatusLogAction" class="com.yinker.etl.trans.action.TransStatusLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="transStatusLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerTrans" />
+	</bean>
+	
+	<bean id="transTimebatchLogAction" class="com.yinker.etl.trans.action.TransTimebatchLogAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="transTimebatchLogService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerTrans" />
+	</bean>
+
+	<bean id="transTableStructureInfoAction" class="com.yinker.etl.trans.action.TransTableStructureInfoAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="transTableStructureInfoService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerTrans" />
+	</bean>
+
+	<bean id="transWarnConfigAction" class="com.yinker.etl.trans.action.TransWarnConfigAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="transWarnConfigService" />
+		<property name="pmDataDictItemService" ref="pmDataDictItemService" />
+		<property name="keyGeneratorContainer" ref="etlKeyGeneratorContainerTrans" />
+	</bean>
+	<bean id="transStuInfoAction" class="com.yinker.etl.trans.action.TransStuInfoAction" init-method="init" scope="prototype">
+		<property name="entityService" ref="transStuInfoService"/>
+	</bean>
+</beans>

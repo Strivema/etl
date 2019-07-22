@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="TransTableStructureInfo">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			trans_name,
+			simple_name,
+			trans_type,
+			src_db_id,
+			src_db_code,
+			src_tb_code,
+			src_descript,
+			target_db_id,
+			target_db_code,
+			target_tb_code,
+			target_descript,
+			sqlStr,
+			is_enable,
+			is_diy_quartz,
+			increment_column,
+			compare_parameter,
+			type,
+			cron,
+			remark,
+			vindicator,
+			vindicator_mail,
+			owner,
+			create_time,
+			last_update_date,
+			id
+	    ]]>
+  	</sql>
+
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			id
+	    ]]>
+	</sql>
+
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" />
+		from trans_table_structure_info
+		<where>
+			<if test="transName != null and transName != ''">
+				<![CDATA[and trans_name like concat('%',#{transName},'%')]]>
+			</if>
+			<if test="simpleName != null and simpleName != ''">
+				<![CDATA[and simple_name like concat('%',#{simpleName},'%')]]>
+			</if>
+			<if test="transType != null and transType != ''">
+				<![CDATA[and trans_type = #{transType}]]>
+			</if>
+			<if test="srcDbId != null and srcDbId != ''">
+				<![CDATA[and src_db_id = #{srcDbId}]]>
+			</if>
+			<if test="srcDbCode != null and srcDbCode != ''">
+				<![CDATA[and src_db_code = #{srcDbCode}]]>
+			</if>
+			<if test="srcTbCode != null and srcTbCode != ''">
+				<![CDATA[and src_tb_code = #{srcTbCode}]]>
+			</if>
+			<if test="srcDescript != null and srcDescript != ''">
+				<![CDATA[and src_descript = #{srcDescript}]]>
+			</if>
+			<if test="targetDbId != null and targetDbId != ''">
+				<![CDATA[and target_db_id = #{targetDbId}]]>
+			</if>
+			<if test="targetDbCode != null and targetDbCode != ''">
+				<![CDATA[and target_db_code = #{targetDbCode}]]>
+			</if>
+			<if test="targetTbCode != null and targetTbCode != ''">
+				<![CDATA[and target_tb_code = #{targetTbCode}]]>
+			</if>
+			<if test="targetDescript != null and targetDescript != ''">
+				<![CDATA[and target_descript = #{targetDescript}]]>
+			</if>
+			<if test="sqlstr != null and sqlstr != ''">
+				<![CDATA[and sqlStr = #{sqlstr}]]>
+			</if>
+			<if test="isEnable != null and isEnable != ''">
+				<![CDATA[and is_enable = #{isEnable}]]>
+			</if>
+			<if test="isDiyQuartz != null and isDiyQuartz != ''">
+				<![CDATA[and is_diy_quartz = #{isDiyQuartz}]]>
+			</if>
+			<if test="compareParameter != null and compareParameter != ''">
+				<![CDATA[and compare_parameter = #{compareParameter}]]>
+			</if>
+			<if test="type != null and type != ''">
+				<![CDATA[and type = #{type}]]>
+			</if>
+			<if test="cron != null and cron != ''">
+				<![CDATA[and cron = #{cron}]]>
+			</if>
+			<if test="remark != null and remark != ''">
+				<![CDATA[and remark = #{remark}]]>
+			</if>
+			<if test="vindicator != null and vindicator != ''">
+				<![CDATA[and vindicator = #{vindicator}]]>
+			</if>
+			<if test="vindicatorMail != null and vindicatorMail != ''">
+				<![CDATA[and vindicator_mail = #{vindicatorMail}]]>
+			</if>
+			<if test="owner != null and owner != ''">
+				<![CDATA[and owner = #{owner}]]>
+			</if>
+			<if test="createTime != null">
+				<![CDATA[and create_time = #{createTime}]]>
+			</if>
+			<if test="createTimeStart != null">
+				<![CDATA[and create_time >= #{createTimeStart}]]>
+			</if>
+			<if test="createTimeEnd != null">
+				<![CDATA[and create_time <= #{createTimeEnd}]]>
+			</if>
+			<if test="lastUpdateDate != null">
+				<![CDATA[and last_update_date = #{lastUpdateDate}]]>
+			</if>
+			<if test="lastUpdateDateStart != null">
+				<![CDATA[and last_update_date >= #{lastUpdateDateStart}]]>
+			</if>
+			<if test="lastUpdateDateEnd != null">
+				<![CDATA[and last_update_date <= #{lastUpdateDateEnd}]]>
+			</if>
+			<if test="id != null and id != ''">
+				<![CDATA[and id = #{id}]]>
+			</if>
+			<if test="incrementColumn != null and incrementColumn != ''">
+				<![CDATA[and increment_column = #{incrementColumn}]]>
+			</if>
+			<if test="targetDBArray != null and targetDBArray.length > 0 ">
+				<![CDATA[and ( target_db_id in ]]>
+				<foreach item="item" index="index" collection="targetDBArray" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				<![CDATA[ )]]>
+			</if>
+			<if test="srcDBArray != null and srcDBArray.length > 0 ">
+				<![CDATA[and ( src_db_id in ]]>
+				<foreach item="item" index="index" collection="srcDBArray" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				<![CDATA[ )]]>
+			</if>
+		</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.yinker.etl.trans.model.base.TransTableStructureInfo">
+		<![CDATA[
+			insert into trans_table_structure_info (
+				trans_name,
+				simple_name,
+				trans_type,
+				src_db_id,
+				src_db_code,
+				src_tb_code,
+				src_descript,
+				target_db_id,
+				target_db_code,
+				target_tb_code,
+				target_descript,
+				sqlStr,
+				is_enable,
+				is_diy_quartz,
+				increment_column,
+				compare_parameter,
+				type,
+				cron,
+				remark,
+				vindicator,
+				vindicator_mail,
+				owner,
+				create_time,
+				last_update_date,
+				id
+			) values (
+				#{transName},
+				#{simpleName},
+				#{transType},
+				#{srcDbId},
+				#{srcDbCode},
+				#{srcTbCode},
+				#{srcDescript},
+				#{targetDbId},
+				#{targetDbCode},
+				#{targetTbCode},
+				#{targetDescript},
+				#{sqlstr},
+				#{isEnable},
+				#{isDiyQuartz},
+				#{incrementColumn},
+				#{compareParameter},
+				#{type},
+				#{cron},
+				#{remark},
+				#{vindicator},
+				#{vindicatorMail},
+				#{owner},
+				#{createTime},
+				#{lastUpdateDate},
+				#{id}
+			)
+		]]>
+	</insert>
+
+	<!-- 根据主键删除数据 -->
+	<delete id="deleteByPK" parameterType="com.yinker.etl.trans.model.base.TransTableStructureInfoPK">
+		<![CDATA[
+			delete from trans_table_structure_info
+				where
+				id=#{id}
+    	]]>
+	</delete>
+
+	<!-- 根据主键更新数据 -->
+	<update id="updateByPK" parameterType="com.yinker.etl.trans.model.base.TransTableStructureInfo">
+		update trans_table_structure_info
+		<set>
+			<if test="transName != null"><![CDATA[trans_name = #{transName},]]></if>
+			<if test="simpleName != null"><![CDATA[simple_name = #{simpleName},]]></if>
+			<if test="transType != null"><![CDATA[trans_type = #{transType},]]></if>
+			<if test="srcDbId != null"><![CDATA[src_db_id = #{srcDbId},]]></if>
+			<if test="srcDbCode != null"><![CDATA[src_db_code = #{srcDbCode},]]></if>
+			<if test="srcTbCode != null"><![CDATA[src_tb_code = #{srcTbCode},]]></if>
+			<if test="srcDescript != null"><![CDATA[src_descript = #{srcDescript},]]></if>
+			<if test="targetDbId != null"><![CDATA[target_db_id = #{targetDbId},]]></if>
+			<if test="targetDbCode != null"><![CDATA[target_db_code = #{targetDbCode},]]></if>
+			<if test="targetTbCode != null"><![CDATA[target_tb_code = #{targetTbCode},]]></if>
+			<if test="targetDescript != null"><![CDATA[target_descript = #{targetDescript},]]></if>
+			<if test="sqlstr != null"><![CDATA[sqlStr = #{sqlstr},]]></if>
+			<if test="isEnable != null"><![CDATA[is_enable = #{isEnable},]]></if>
+			<if test="isDiyQuartz != null"><![CDATA[is_diy_quartz = #{isDiyQuartz},]]></if>
+			<if test="incrementColumn != null"><![CDATA[increment_column = #{incrementColumn},]]></if>
+			<if test="compareParameter != null"><![CDATA[compare_parameter = #{compareParameter},]]></if>
+			<if test="remark != null"><![CDATA[remark = #{remark},]]></if>
+			<if test="vindicator != null"><![CDATA[vindicator = #{vindicator},]]></if>
+			<if test="vindicatorMail != null"><![CDATA[vindicator_mail = #{vindicatorMail},]]></if>
+			<if test="owner != null"><![CDATA[owner = #{owner},]]></if>
+			<if test="createTime != null"><![CDATA[create_time = #{createTime},]]></if>
+			<if test="lastUpdateDate != null"><![CDATA[last_update_date = #{lastUpdateDate},]]></if>
+			type = #{type},
+			cron = #{cron}
+		</set>
+		where
+		id=#{id}
+	</update>
+
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPK" parameterType="com.yinker.etl.trans.model.base.TransTableStructureInfoPK" resultMap="etl.TransTableStructureInfoRM">
+		select <include refid="allColumns" />
+		<![CDATA[
+			from trans_table_structure_info 
+			where 
+				id=#{id}
+	    ]]>
+	</select>
+
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.yinker.etl.trans.model.TransTableStructureInfoQuery" resultMap="etl.TransTableStructureInfoRM">
+		<include refid="querySql"/>
+		<if test="groupByCloume != null and groupByCloume != ''">
+			GROUP BY ${groupByCloume}
+		</if>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.yinker.etl.trans.model.TransTableStructureInfoQuery" resultMap="etl.TransTableStructureInfoRM">
+		<include refid="querySql"/>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.yinker.etl.trans.model.TransTableStructureInfoQuery" resultType="integer">
+		select count(id) from ( <include refid="querySql"/> ) as tmp_trans_table_structure_info
+	</select>
+
+	<select id="selectTransCount" resultType="integer">
+		select count(1) from trans_table_structure_info
+	</select>
+
+	<update id="updateDbCode" parameterType="java.util.Map">
+		<![CDATA[
+            UPDATE trans_table_structure_info SET src_db_code = #{code} WHERE src_db_id = #{id};
+        ]]>
+	</update>
+	<update id="updateDbCode2" parameterType="java.util.Map">
+		<![CDATA[
+            UPDATE trans_table_structure_info SET target_db_code = #{code} WHERE target_db_id = #{id};
+        ]]>
+	</update>
+
+</mapper>

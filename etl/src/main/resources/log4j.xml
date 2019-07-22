@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+	<!-- app.log文件包含所有级别的日志信息 -->
+	<appender name="app" class="org.apache.log4j.RollingFileAppender">
+		<param name="Threshold" value="DEBUG"/>
+		<param name="File" value="./app.log" />
+		<param name="MaxFileSize" value="5MB" />
+		<param name="MaxBackupIndex" value="1" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} [%c.%M(%F:%L)] %-5p %m%n" />
+		</layout>
+	</appender>
+
+	<!-- error.log只包含大于等于ERROR级别的日志信息 -->
+	<appender name="error" class="org.apache.log4j.RollingFileAppender">
+		<param name="Threshold" value="ERROR"/>
+		<param name="File" value="./error.log" />
+		<param name="MaxFileSize" value="5MB" />
+		<param name="MaxBackupIndex" value="1" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} [%c.%M(%F:%L)] %-5p %m%n" />
+		</layout>
+	</appender>
+
+	<!-- 控制台，控制台输出所有级别的日志文件 -->
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<param name="Threshold" value="DEBUG"/>
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} [%c.%M(%F:%L)] %-5p %m%n" />
+		</layout>
+	</appender>
+	
+	<logger name="org.apache.commons.beanutils">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="org.apache.struts2">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="com.opensymphony.xwork2">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="freemarker">
+		<level value="WARN" />
+	</logger>
+	<logger name="org.springframework">
+		<level value="DEBUG" />
+	</logger>
+
+	<!-- ibatis日志配置 -->
+	<logger name="org.apache.ibatis">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="org.mybatis">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="java.sql.Connection">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="java.sql.Statement">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="java.sql.PreparedStatement">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="java.sql.ResultSet">
+		<level value="DEBUG" />
+	</logger>
+	<!-- ibatis日志配置结束 -->
+
+	<logger name="org.zwork">
+		<level value="DEBUG" />
+	</logger>
+	<root>
+		<priority value="DEBUG" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="app" />
+		<appender-ref ref="error" />
+	</root>
+</log4j:configuration>

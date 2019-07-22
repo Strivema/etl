@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- dao定义 -->
+	
+	<bean id="transInfoDao" class="com.yinker.etl.trans.dao.TransInfoDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="transConfigChangeLogDao" class="com.yinker.etl.trans.dao.TransConfigChangeLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="transStatusLogDao" class="com.yinker.etl.trans.dao.TransStatusLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="transTimebatchLogDao" class="com.yinker.etl.trans.dao.TransTimebatchLogDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="syncTableInfoDao" class="com.yinker.etl.trans.dao.SyncTableInfoDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="transTableStructureInfoDao" class="com.yinker.etl.trans.dao.TransTableStructureInfoDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="transWarnConfigDao" class="com.yinker.etl.trans.dao.TransWarnConfigDao" >
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="transStuInfoDao" class="com.yinker.etl.trans.dao.TransStuInfoDao">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+</beans>

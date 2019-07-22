@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="etl.PmKettleJobItemLog" class="com.yinker.etl.mongodb.basedao.MongoDBMapper">
+
+		<property name="collectionName" value="pm_kettle_job_item_log" />
+
+		<property name="resultMap">
+			<map>
+				<entry key="etl.PmKettleJobItemLog">
+					<map>
+						<entry key="ID_BATCH" value="idBatch"  />
+						<entry key="CHANNEL_ID" value="channelId"  />
+						<entry key="LOG_DATE" value="logDate"  />
+						<entry key="TRANSNAME" value="transname"  />
+						<entry key="STEPNAME" value="stepname"  />
+						<entry key="LINES_READ" value="linesRead"  />
+						<entry key="LINES_WRITTEN" value="linesWritten"  />
+						<entry key="LINES_UPDATED" value="linesUpdated"  />
+						<entry key="LINES_INPUT" value="linesInput"  />
+						<entry key="LINES_OUTPUT" value="linesOutput" /> 
+						<entry key="LINES_REJECTED" value="linesRejected"  />
+						<entry key="ERRORS" value="errors" />
+						<entry key="RESULT" value="result" />
+						<entry key="NR_RESULT_ROWS" value="nrResultRows" />
+						<entry key="NR_RESULT_FILES" value="nrResultFiles" />
+					</map>
+				</entry>
+			</map>
+		</property>
+
+		<property name="sql">
+			<map>
+				<!-- 插入数据 -->
+				<entry key="insert">
+					<bean class="com.yinker.etl.mongodb.basedao.MongoDBMapperSql">
+						<property name="resultMap" value="etl.PmKettleJobItemLog"></property>
+						<property name="condition" value=""/>
+					</bean>
+				</entry>
+				
+				<!-- 根据_id查询数据 -->
+				<entry key="selectByOne">
+					<bean class="com.yinker.etl.mongodb.basedao.MongoDBMapperSql">
+						<property name="resultMap" value="etl.PmKettleJobItemLog"></property>
+						<property name="resultType" value="com.yinker.etl.pm.model.base.PmKettleJobItemLog" />
+						<property name="condition">
+							<value>
+								<![CDATA[
+									return '{"ID_BATCH":' + obj.idBatch + '}'
+								]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+				
+				<!-- 按条件查询任务列表 -->
+				<entry key="getByCondition">
+					<bean class="com.yinker.etl.mongodb.basedao.MongoDBMapperSql">
+						<property name="resultMap" value="etl.PmKettleJobItemLog"></property>
+						<property name="resultType" value="com.yinker.etl.pm.model.base.PmKettleJobItemLog" />
+						<property name="sortColumns" value="LOG_DATE desc" />
+						<property name="condition">
+							<value>
+								<![CDATA[
+									def q = '{'
+									if(obj.IDBATCH != null && obj.IDBATCH != '')
+										q = q + '"ID_BATCH": ' + obj.IDBATCH + ','
+									if(obj.TRANSNAME != null && obj.TRANSNAME != '')
+										q = q + '"TRANSNAME":{"$regex":".*' + obj.TRANSNAME + '.*"},'
+									if(obj.STEPNAME != null && obj.STEPNAME != '')
+										q = q + '"STEPNAME":{"$regex":".*' + obj.STEPNAME + '.*"},'
+									if(obj.STARTDATE != null && obj.STARTDATE != '')
+										q = q + '"LOG_DATE":{"$gte":{"$date":' + obj.STARTDATE.getTime() + '}},'
+									if(obj.ENDDATE != null && obj.ENDDATE != '')
+										q = q + '"LOG_DATE":{"$lte":{"$date":' + obj.ENDDATE.getTime() + '}},'
+									if(q.endsWith(','))
+										q = q.substring(0,q.length() - 1)
+									q = q + '}'
+									return q
+								]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+</beans>

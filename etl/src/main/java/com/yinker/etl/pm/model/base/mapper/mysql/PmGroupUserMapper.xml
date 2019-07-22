@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="PmGroupUser">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			id,
+			name,
+			group_id,
+			owner,
+			create_time,
+			last_update_time
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from pm_group_user
+			<where>	      				
+				<if test="id != null and id != ''">
+					<![CDATA[and id = #{id}]]>
+				</if>
+				<if test="name != null and name != ''">
+					<![CDATA[and name = #{name}]]>
+				</if>
+				<if test="groupId != null and groupId != ''">
+					<![CDATA[and group_id = #{groupId}]]>
+				</if>
+				<if test="owner != null and owner != ''">
+					<![CDATA[and owner = #{owner}]]>
+				</if>
+				<if test="createTime != null">
+					<![CDATA[and create_time = #{createTime}]]>
+				</if>
+				<if test="createTimeStart != null">
+					<![CDATA[and create_time >= #{createTimeStart}]]>
+				</if>
+				<if test="createTimeEnd != null">
+					<![CDATA[and create_time <= #{createTimeEnd}]]>
+				</if>
+				<if test="lastUpdateTime != null">
+					<![CDATA[and last_update_time = #{lastUpdateTime}]]>
+				</if>
+				<if test="lastUpdateTimeStart != null">
+					<![CDATA[and last_update_time >= #{lastUpdateTimeStart}]]>
+				</if>
+				<if test="lastUpdateTimeEnd != null">
+					<![CDATA[and last_update_time <= #{lastUpdateTimeEnd}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.yinker.etl.pm.model.base.PmGroupUser">
+	    <![CDATA[
+			insert into pm_group_user (
+				id,
+				name,
+				group_id,
+				owner,
+				create_time,
+				last_update_time
+			) values (
+				#{id},
+				#{name},
+				#{groupId},
+				#{owner},
+				#{createTime},
+				#{lastUpdateTime}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据主键删除数据 -->
+    <delete id="deleteByPK" parameterType="com.yinker.etl.pm.model.base.PmGroupUserPK">
+        <![CDATA[
+			delete from pm_group_user 
+				where
+				group_id=#{groupId}
+    	]]>
+    </delete>
+   
+	<!-- 根据主键更新数据 -->
+	<update id="updateByPK" parameterType="com.yinker.etl.pm.model.base.PmGroupUser">
+		update pm_group_user 
+			<set>
+				<if test="name != null"><![CDATA[name = #{name},]]></if>
+				<if test="groupId != null"><![CDATA[groupId = #{groupId},]]></if>
+				<if test="owner != null"><![CDATA[owner = #{owner},]]></if>
+				<if test="createTime != null"><![CDATA[create_time = #{createTime},]]></if>
+				<if test="lastUpdateTime != null"><![CDATA[last_update_time = #{lastUpdateTime},]]></if>
+			</set>
+		where 
+			id=#{id}
+	</update>
+	
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPK" parameterType="com.yinker.etl.pm.model.base.PmGroupUserPK" resultMap="etl.PmGroupUserRM">
+        select <include refid="allColumns" />
+	    <![CDATA[
+			from pm_group_user 
+			where 
+				id=#{id}
+	    ]]>
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.yinker.etl.pm.model.PmGroupUserQuery" resultMap="etl.PmGroupUserRM">
+		<include refid="querySql"/>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.yinker.etl.pm.model.PmGroupUserQuery" resultMap="etl.PmGroupUserRM">
+		<include refid="querySql"/>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.yinker.etl.pm.model.PmGroupUserQuery" resultType="integer">
+		select count(id) from ( <include refid="querySql"/> ) as tmp_pm_group_user
+	</select>
+	
+</mapper>

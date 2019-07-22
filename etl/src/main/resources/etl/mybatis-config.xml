@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<!-- 全局的映射器启用或禁用缓存  -->
+		<setting name="cacheEnabled" value="true" />
+		<!-- 全局启用或禁用延迟加载。当禁用时，所有关联对象都会即时加载。 -->
+		<setting name="lazyLoadingEnabled" value="true" />
+		<!-- 设置关联对象加载的形态，此处为按需加载字段(加载字段由SQL指定)，不会加载关联表的所有字段，以提高性能。 -->
+		<setting name="aggressiveLazyLoading" value="false"/>
+	</settings>
+	<typeHandlers>
+		<typeHandler handler="org.zwork.framework.thirdparty.org.mybatis.plugin.handler.BlobTypeHandler" jdbcType="BLOB" javaType="String"/>
+	</typeHandlers>
+	<plugins>
+		<plugin interceptor="org.zwork.framework.thirdparty.org.mybatis.plugin.OffsetLimitInterceptor">
+			<property name="dialectClass" value="org.zwork.framework.jdbc.dialect.MySQLDialect"/>
+		</plugin>
+	</plugins>
+	<mappers>
+		<!-- 公共控制 -->
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/ResultMap.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmDataDictMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmDataDictItemMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmParamCategoryMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmParamMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmKeyGeneratorMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmCacheMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmCacheElementMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmMessageInfoMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmMessageRecipientMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmOperatorLogMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmOperatorLogDetailMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmUserDefQueryCategoryMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmUserDefQueryMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmUserDefQueryMapperExt.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmUserDefQueryAttrsMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmUserDefQueryListHeadMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmUserDefQueryFilterMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmUserDefQueryFilterConditonsMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmUserDefQueryFilterHeadersMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmFileDownloadRecordMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmSysFaultCategoryMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmSysFaultCodeMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmMessageNoticeMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmMessageNoticeCategoryMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmDataMigrationPlanMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmDataMigrationPlanMapperExt.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmDataMigrationMapperMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmDistributedLockMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmScheduleTypeDefMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmScheduleTypePropertyMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmScheduleInfoMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/ext/PmScheduleInfoExtMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmScheduleInfoPropertyMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmSysApplicationMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmSysApplicationAllowOriginMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmSysApplicationAccessRuleMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmSysApplicationResourceMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmExceptionLogMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmExceptionOperatorRecordMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmUserDefQueryHelpMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmSysApplicationClusterMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmMessageNoticeCommentMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmMessageNoticeReadRecordMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmMessageNoticeRecipientMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmCategoryTreeAttrsMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmCategoryTreeCfgAttrsMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmCategoryTreeBaseInfoMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmCategoryTreeCfgBaseInfoMapper.xml"/>
+		<mapper resource="org/zwork/srdp/pm/model/base/mapper/mysql/PmCategoryTreeCfgTabsMapper.xml"/>
+
+
+		<!-- 权限管理 -->
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/ResultMap.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacUserMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacRoleMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacPermissionMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacGroupMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacAccessLogMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacResourceMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacMenuMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacRolePermissionMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacUserRoleMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacTenantMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacUserDefinedMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacOnlineUserMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacOnlineUserHisMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacLoginRetryLogMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacIpBlacklistMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacUserPwdResetRecordMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacPortalTokenMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacUserDeviceMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacPortalTokenHisMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacQrCodeMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacWeakPwdMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacGroupDefinedMapper.xml"/>
+		<mapper resource="org/zwork/srdp/rbac/model/base/mapper/mysql/RbacSecurityAccessLogMapper.xml"/>
+
+		<!-- 流程管理 -->
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/ResultMap.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowCfgMenuMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowCfgFormCategoryMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowCfgFormDefMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowCfgOperateDefMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowCfgProcessMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowCfgProcessNodeFormMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowCfgProcessNodeMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowCfgProcessNodeOperateMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowRunProcessNodeFormMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowRunProcessNodeOperateMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowHisProcessNodeOperateMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowHisProcessNodeFormMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowMutexMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowGropuReportRelationMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowUserDefFormCategoryMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowUserDefFormMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowUserDefFormItemMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowFormObjectMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowOpnionDetailMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowOpnionMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/ext/wizard/dao/WizardMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowHisListenerExceptionMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowHisListenerExecutionRecordMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowRunListenerExceptionMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowRunListenerExecutionRecordMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowDeployLogMapper.xml"/>
+		<mapper resource="org/zwork/srdp/flow/model/base/mapper/mysql/FlowUserFavoriteMapper.xml"/>
+
+		<!-- 档案管理 -->
+		<!--<mapper resource="org/zwork/srdp/fms/model/base/mapper/mysql/ResultMap.xml"/>
+		<mapper resource="org/zwork/srdp/fms/model/base/mapper/mysql/FmsCfgAccessSystemInfoMapper.xml"/>
+		<mapper resource="org/zwork/srdp/fms/model/base/mapper/mysql/FmsCfgFileCategoryMapper.xml"/>
+		<mapper resource="org/zwork/srdp/fms/model/base/mapper/mysql/FmsCfgFileCategoryItemMapper.xml"/>
+		<mapper resource="org/zwork/srdp/fms/model/base/mapper/mysql/FmsBizFileStorageMapper.xml"/>
+		<mapper resource="org/zwork/srdp/fms/model/base/mapper/mysql/FmsBizFileAttachStorageMapper.xml"/>-->
+
+		<!-- 集成decp-数据交换平台 -->
+		<!--<mapper resource="com/yinker/decp/msg/model/base/mapper/mysql/ResultMap.xml" />
+		<mapper resource="com/yinker/decp/msg/model/base/mapper/mysql/MsgExchangePackageMapper.xml" />
+		<mapper resource="com/yinker/decp/msg/model/base/mapper/mysql/MsgTransferInfoMapper.xml" />-->
+		<!-- 集成srdp结束 -->
+		
+
+		<!-- 公共管理 -->
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/ResultMap.xml"/>
+
+		<!-- 数据转换 -->
+		<mapper resource="com/yinker/etl/trans/model/base/mapper/mysql/ResultMap.xml"/>
+		
+		<!-- 公共管理 -->
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmDataSourceMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmOperationLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmKettleTransLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmKettleStepsLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmErrorRecordLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmKettleJobLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmKettleJobItemLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmRuntransErrorLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmErrorTableStructureLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmMongoTransferBatchLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmMongoTransferTableNameInfoMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmGroupMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmGroupUserMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmDatasourceGroupMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmKettleChannelLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmMailTemplateMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmMailUserMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmMailSendLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmSystemInfoLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/pm/model/base/mapper/mysql/PmMailServerConfigMapper.xml"/>
+
+		<!-- 数据转换 -->
+		<mapper resource="com/yinker/etl/trans/model/base/mapper/mysql/TransInfoMapper.xml"/>
+		<mapper resource="com/yinker/etl/trans/model/base/mapper/mysql/TransConfigChangeLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/trans/model/base/mapper/mysql/TransStatusLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/trans/model/base/mapper/mysql/TransTimebatchLogMapper.xml"/>
+		<mapper resource="com/yinker/etl/trans/model/base/mapper/mysql/SyncTableInfoMapper.xml"/>
+		<mapper resource="com/yinker/etl/trans/model/base/mapper/mysql/TransTableStructureInfoMapper.xml"/>
+		<mapper resource="com/yinker/etl/trans/model/base/mapper/mysql/TransWarnConfigMapper.xml"/>
+
+		<!--学习-->
+		<mapper resource="com/yinker/etl/trans/model/base/mapper/mysql/TransInfoMapper.xml"/>
+		<!-- 任务调度 -->
+		<mapper resource="com/yinker/etl/qrtz/model/base/mapper/mysql/QuartzScheduleMapper.xml"/>
+
+		<!-- Mysql to Mongo Trans Log -->
+		<mapper resource="com/yinker/etl/mongodb/model/base/mapper/mongodb/MysqlTransLogMapper.xml"/>
+	</mappers>
+</configuration>

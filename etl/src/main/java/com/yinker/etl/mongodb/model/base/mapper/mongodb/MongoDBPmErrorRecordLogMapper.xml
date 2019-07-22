@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="etl.PmErrorRecordLog" class="com.yinker.etl.mongodb.basedao.MongoDBMapper">
+
+		<property name="collectionName" value="pm_error_record_log" />
+
+		<property name="resultMap">
+			<map>
+				<entry key="etl.PmErrorRecordLog">
+					<map>
+						<entry key="error_id" value="errorId"  />
+						<entry key="err_trans_name" value="errTransName"  />
+						<entry key="err_table_name" value="errTableName"  />
+						<entry key="err_create_time" value="errCreateTime"  />
+						<entry key="err_status" value="errStatus"  />
+						<entry key="err_count" value="errCount"  />
+						<entry key="err_desc" value="errDesc"  />
+						<entry key="err_field" value="errField"  />
+						<entry key="err_code" value="errCode"  />
+						<entry key="transid" value="transId"  />
+						<entry key="remark" value="remark"  />
+						<entry key="id" value="_id" />
+					</map>
+				</entry>
+			</map>
+		</property>
+
+		<property name="sql">
+			<map>
+				<!-- 插入数据 -->
+				<entry key="insert">
+					<bean class="com.yinker.etl.mongodb.basedao.MongoDBMapperSql">
+						<property name="resultMap" value="etl.PmErrorRecordLog"></property>
+						<property name="condition" value=""/>
+					</bean>
+				</entry>
+				
+				<!-- 根据_id查询数据 -->
+				<entry key="selectByOne">
+					<bean class="com.yinker.etl.mongodb.basedao.MongoDBMapperSql">
+						<property name="resultMap" value="etl.PmErrorRecordLog"></property>
+						<property name="resultType" value="com.yinker.etl.pm.model.base.PmErrorRecordLog" />
+						<property name="condition">
+							<value>
+								<![CDATA[
+									return '{"errorId":' + obj.errorId + '}'
+								]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+				<!-- 按条件查询任务列表 -->
+				<entry key="getByCondition">
+					<bean class="com.yinker.etl.mongodb.basedao.MongoDBMapperSql">
+						<property name="resultMap" value="etl.PmErrorRecordLog"></property>
+						<property name="resultType" value="com.yinker.etl.pm.model.base.PmErrorRecordLog" />
+						<property name="sortColumns" value="err_create_time desc" />
+						<property name="condition">
+							<value>
+								<![CDATA[
+									def q = '{'
+									if(obj.errTransName != null && obj.errTransName != '')
+										q = q + '"err_trans_name":{"$regex":".*' + obj.errTransName + '.*"},'
+									if(obj.errTableName != null && obj.errTableName != '')
+										q = q + '"err_table_name":{"$regex":".*' + obj.errTableName + '.*"},'
+									if(obj.errStatus != null && obj.errStatus != '')
+										q = q + '"err_status":"' + obj.errStatus + '",'
+									if(obj.transId != null && obj.transId != '')
+										q = q + '"transid":"' + obj.transId + '",'
+									if(obj.errCreateTimeStart != null && obj.errCreateTimeStart != '')
+										q = q + '"err_create_time":{"$gte":{"$date":' + obj.errCreateTimeStart.getTime() + '}},'
+									if(obj.errCreateTimeEnd != null && obj.errCreateTimeEnd != '')
+										q = q + '"err_create_time":{"$lte":{"$date":' + obj.errCreateTimeEnd.getTime() + '}},'
+									if(q.endsWith(','))
+										q = q.substring(0,q.length() - 1)
+									q = q + '}'
+									return q
+								]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+				
+				<entry key="updateById">
+					<bean class="com.yinker.etl.mongodb.basedao.MongoDBMapperSql">
+						<property name="resultMap" value="etl.PmErrorRecordLog"></property>
+						<property name="condition">
+							<value>
+								<![CDATA[
+									return '{"errorId":' + obj.errorId + '}'
+								]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+    <!-- 激活annotation功能 -->
+    <context:annotation-config/>
+    <context:component-scan base-package="com.yinker.etl.*"/>
+
+    <!-- Spring属性占位符替换为srdp平台参数表的参数值-->
+    <bean class="org.zwork.srdp.config.PmParamPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="placeholderPrefix">
+            <value>%{</value>
+        </property>
+        <property name="placeholderSuffix">
+            <value>}</value>
+        </property>
+        <property name="paramCodes">
+            <list>
+                <value>appName</value>
+                <value>flowDiagramPath</value>
+                <value>portalURL</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 加载properties文件 -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="placeholderPrefix">
+            <value>%{</value>
+        </property>
+        <property name="placeholderSuffix">
+            <value>}</value>
+        </property>
+        <property name="locations">
+            <list>
+                <!-- 加载mq配置文件 -->
+                <value>classpath:rabbitmq.properties</value>
+                <value>classpath:mongo.properties</value>
+                <value>classpath:etl_config.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 加载etl数据源 -->
+    <bean id="etlDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="filters" value="config"/>
+        <property name="connectionProperties" value="config.file=classpath:druid-pool.xml;config.decrypt=false"/>
+    </bean>
+    <!-- 动态数据源 -->
+    <bean id="dataSource" class="com.yinker.etl.pm.service.dataSource.DynamicDataSource" factory-method="getInstance">
+        <property name="targetDataSources">
+            <map key-type="java.lang.String"></map>
+        </property>
+        <property name="defaultTargetDataSource" ref="etlDataSource"/>
+    </bean>
+
+    <!-- 集成mybatis -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+        <property name="configLocation">
+            <value>classpath:etl\mybatis-config.xml</value>
+        </property>
+    </bean>
+
+    <!-- 定义事务管理器（声明式的事务） -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="select*" propagation="SUPPORTS"/>
+            <tx:method name="get*" propagation="SUPPORTS"/>
+            <tx:method name="find*" propagation="SUPPORTS"/>
+            <tx:method name="list*" propagation="SUPPORTS"/>
+            <!-- action中的方法 -->
+            <tx:method name="init" propagation="SUPPORTS"/>
+            <tx:method name="list*" propagation="SUPPORTS"/>
+            <tx:method name="*list" propagation="SUPPORTS"/>
+            <tx:method name="*" propagation="REQUIRED" rollback-for="java.lang.Exception,org.zwork.framework.exception.ServiceException"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--
+         第一个*代表所有的返回值类型
+         第二个*代表所有的类
+         第三个*代表类所有方法 最后一个..代表所有的参数。
+         com.yinker.crms.lmt.listener.impl
+     -->
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="allManagerMethod" expression="execution(* org.zwork.srdp.rbac.service.impl.*.* (..))
+                                                        or execution(* org.zwork.srdp.pm.service.impl.*.* (..))
+                                                        or execution(* org.zwork.srdp.flow.service.*.* (..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod"/>
+    </aop:config>
+
+    <!-- 数据源切换配置aop -->
+    <bean id="dataSourceAspect" class="com.yinker.etl.annotation.DataSourceAspect"/>
+    <!--<aop:config proxy-target-class="true">
+        <aop:aspect ref="dataSourceAspect" order="0">
+            <aop:pointcut id="target" expression="execution(* com.yinker.etl.*.service.*.* (..))"/>
+            <aop:before method="before" pointcut-ref="target"/>
+        </aop:aspect>
+    </aop:config>-->
+    <!--<aop:config>
+        <aop:pointcut id="transactionPointCut" expression="execution(* com.yinker.etl.*.service.*.* (..))" />
+        <aop:advisor pointcut-ref="transactionPointCut" advice-ref="txAdvice" order="2" />
+        <aop:advisor advice-ref="dataSourceAspect" pointcut-ref="transactionPointCut" order="1"/>
+    </aop:config>-->
+
+    <!-- spring上下文,用于在web中获取spring上下文中的bean -->
+    <bean id="springBeanContext" class="org.zwork.framework.thirdparty.org.springframework.SpringBeanContext"/>
+
+    <!-- Web应用启动时功能初始化配置 -->
+    <bean id="webAppInitConfig" class="org.zwork.framework.listener.impl.WebAppInitConfig">
+        <property name="webAppInits">
+            <list>
+                <bean class="org.zwork.framework.listener.impl.SysPropertyWebAppInit">
+                    <property name="description" value="系统环境变量初始化"/>
+                    <property name="properties">
+                        <map>
+                            <entry key="file.encoding" value="UTF-8"/>
+                        </map>
+                    </property>
+                </bean>
+                <bean class="org.zwork.srdp.rbac.webAppInit.RbacApplicationWebAppInit">
+                    <property name="description" value="application上线文初始化"/>
+                    <property name="properties">
+                        <map>
+                            <!-- key:属性键值 value:对应pm_param参数表的code -->
+                            <entry key="appName" value="appName"/>
+                            <!-- 查询区域一行的高度-->
+                            <entry key="searchContentOneRowHeight" value="searchContentOneRowHeight"/>
+                            <!-- 查询区域两行行的高度-->
+                            <entry key="searchContentTwoRowHeight" value="searchContentTwoRowHeight"/>
+                            <!-- 查询区域按钮区域的高度-->
+                            <entry key="searchToolbarHeight" value="searchToolbarHeight"/>
+                            <!-- 分页的高度-->
+                            <entry key="listPaginationHeight" value="listPaginationHeight"/>
+                            <!-- 分页的每页条数集-->
+                            <entry key="listPaginationSizes" value="listPaginationSizes"/>
+                            <!-- 查询页面按钮区域的高度-->
+                            <entry key="viewToolbarHeight" value="viewToolbarHeight"/>
+                            <!-- 编辑页面按钮区域的高度-->
+                            <entry key="editToolbarHeight" value="editToolbarHeight"/>
+                            <!-- 用户选择时提示信息-->
+                            <entry key="userSelectTip" value="userSelectTip"/>
+                            <!-- 组选择时提示信息-->
+                            <entry key="groupSelectTip" value="groupSelectTip"/>
+                            <!-- 许可选择时提示信息-->
+                            <entry key="permissionSelectTip" value="permissionSelectTip"/>
+                        </map>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 异步线程池 -->
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 核心线程数，默认为1 -->
+        <property name="corePoolSize" value="30"/>
+        <!-- 最大线程数，默认为Integer.MAX_VALUE -->
+        <property name="maxPoolSize" value="60"/>
+        <!-- 队列最大长度 >=mainExecutor.maxSize -->
+        <property name="queueCapacity" value="100"/>
+        <!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+        <property name="keepAliveSeconds" value="300"/>
+        <!-- 线程池对拒绝任务（无线程可用）的处理策略，目前只支持AbortPolicy、CallerRunsPolicy；默认为后者 -->
+        <!-- 若不作该处理，当线程满了，队列满了之后，继续往下增加任务，则抛出异常，拒绝该任务 -->
+        <property name="rejectedExecutionHandler">
+            <!-- AbortPolicy:直接抛出java.util.concurrent.RejectedExecutionException异常 -->
+            <!-- CallerRunsPolicy:主线程直接执行该任务，执行完之后尝试添加下一个任务到线程池中，可以有效降低向线程池内添加任务的速度 -->
+            <!-- DiscardOldestPolicy:抛弃旧的任务、暂不支持；会导致被丢弃的任务无法再次被执行 -->
+            <!-- DiscardPolicy:抛弃当前任务、暂不支持；会导致被丢弃的任务无法再次被执行 -->
+            <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
+        </property>
+    </bean>
+
+    <!-- Spring 加载之后执行：此类用于动态加载数据源 -->
+    <bean class="com.yinker.etl.pm.service.dataSource.InstantiationTracingBeanPostProcessor"/>
+
+    <!-- 集成srdp -->
+    <import resource="classpath:srdp\java-mail.xml"/>
+    <import resource="classpath:srdp\key-generator.xml"/>
+    <import resource="classpath:srdp\bean_context_default.xml"/>
+
+    <!-- 引入das项目-bean定义文件 -->
+    <import resource="classpath:etl\beanContext.xml"/>
+    <!-- 引入das项目-主键定义 -->
+    <import resource="classpath:etl\key-generator.xml"/>
+    <!-- rabbitMQ配置文件 -->
+    <import resource="classpath:etl\spring-rabbitmq.xml"/>
+    <!-- mongodb配置文件 -->
+    <import resource="classpath:etl\mongodb-config.xml"/>
+</beans>

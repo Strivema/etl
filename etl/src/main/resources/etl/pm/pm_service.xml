@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- service定义 -->
+
+    <bean id="pmDataSourceService" class="com.yinker.etl.pm.service.PmDataSourceService">
+        <property name="modelDao" ref="pmDataSourceDao"/>
+    </bean>
+
+    <bean id="pmOperationLogService" class="com.yinker.etl.pm.service.PmOperationLogService">
+        <property name="modelDao" ref="pmOperationLogDao"/>
+    </bean>
+
+    <bean id="pmKettleTransLogService" class="com.yinker.etl.pm.service.PmKettleTransLogService">
+        <property name="modelDao" ref="pmKettleTransLogDao"/>
+    </bean>
+
+    <bean id="pmKettleStepsLogService" class="com.yinker.etl.pm.service.PmKettleStepsLogService">
+        <property name="modelDao" ref="pmKettleStepsLogDao"/>
+    </bean>
+
+    <bean id="pmErrorRecordLogService" class="com.yinker.etl.pm.service.PmErrorRecordLogService">
+        <property name="modelDao" ref="pmErrorRecordLogDao"/>
+    </bean>
+
+    <bean id="pmKettleJobLogService" class="com.yinker.etl.pm.service.PmKettleJobLogService">
+        <property name="modelDao" ref="pmKettleJobLogDao"/>
+    </bean>
+
+    <bean id="pmKettleJobItemLogService" class="com.yinker.etl.pm.service.PmKettleJobItemLogService">
+        <property name="modelDao" ref="pmKettleJobItemLogDao"/>
+    </bean>
+
+    <bean id="pmRuntransErrorLogService" class="com.yinker.etl.pm.service.PmRuntransErrorLogService">
+        <property name="modelDao" ref="pmRuntransErrorLogDao"/>
+    </bean>
+
+    <bean id="pmErrorTableStructureLogService" class="com.yinker.etl.pm.service.PmErrorTableStructureLogService">
+        <property name="modelDao" ref="pmErrorTableStructureLogDao"/>
+    </bean>
+
+    <bean id="pmMongoTransferTableNameInfoService" class="com.yinker.etl.pm.service.PmMongoTransferTableNameInfoService">
+        <property name="modelDao" ref="pmMongoTransferTableNameInfoDao"/>
+    </bean>
+
+    <bean id="pmMongoTransferBatchLogService" class="com.yinker.etl.pm.service.PmMongoTransferBatchLogService">
+        <property name="modelDao" ref="pmMongoTransferBatchLogDao"/>
+    </bean>
+
+    <bean id="pmGroupService" class="com.yinker.etl.pm.service.PmGroupService">
+        <property name="modelDao" ref="pmGroupDao"/>
+    </bean>
+
+    <bean id="pmGroupUserService" class="com.yinker.etl.pm.service.PmGroupUserService">
+        <property name="modelDao" ref="pmGroupUserDao"/>
+    </bean>
+
+    <bean id="pmDatasourceGroupService" class="com.yinker.etl.pm.service.PmDatasourceGroupService">
+        <property name="modelDao" ref="pmDatasourceGroupDao"/>
+    </bean>
+
+    <bean id="pmKettleChannelLogService" class="com.yinker.etl.pm.service.PmKettleChannelLogService">
+        <property name="modelDao" ref="pmKettleChannelLogDao"/>
+    </bean>
+
+    <bean id="pmMailTemplateService" class="com.yinker.etl.pm.service.PmMailTemplateService">
+        <property name="modelDao" ref="pmMailTemplateDao"/>
+    </bean>
+
+    <bean id="pmMailUserService" class="com.yinker.etl.pm.service.PmMailUserService">
+        <property name="modelDao" ref="pmMailUserDao"/>
+    </bean>
+
+    <bean id="pmMailSendLogService" class="com.yinker.etl.pm.service.PmMailSendLogService">
+        <property name="modelDao" ref="pmMailSendLogDao"/>
+    </bean>
+
+    <bean id="pmSystemInfoLogService" class="com.yinker.etl.pm.service.PmSystemInfoLogService">
+        <property name="modelDao" ref="pmSystemInfoLogDao"/>
+    </bean>
+
+    <bean id="tomcatListener" class="com.yinker.etl.pm.service.TomcatListener">
+    </bean>
+
+    <bean id="pmMailServerConfigService" class="com.yinker.etl.pm.service.PmMailServerConfigService">
+        <property name="modelDao" ref="pmMailServerConfigDao"/>
+    </bean>
+</beans>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+
+    <bean id="connectionFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+        <constructor-arg value="%{rabbitmq.host}"/>
+        <property name="username" value="%{rabbitmq.username}"/>
+        <property name="password" value="%{rabbitmq.password}"/>
+    </bean>
+
+    <rabbit:admin connection-factory="connectionFactory"/>
+    <rabbit:template id="amqpTemplate" connection-factory="connectionFactory" exchange="direct_change"/>
+
+    <!-- ETL抽取配置 增量抽取 -->
+    <!-- 定义队列 -->
+    <rabbit:queue name="%{rabbitmq.projectName}_etl.increment" durable="true" auto-delete="false" exclusive="false"/>
+    <!-- 定义direct exchange，绑定queue -->
+    <rabbit:direct-exchange name="direct_change" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="%{rabbitmq.projectName}_etl.increment" key="%{rabbitmq.projectName}_incrementKey"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    <!--接收消息队列消息到方法中-->
+    <bean id="etlIncrementMQ" class="com.yinker.etl.rabbitmq.receive.service.EtlIncrementMQService">
+        <property name="taskExecutor" ref="taskExecutor"/>
+    </bean>
+    <rabbit:listener-container connection-factory="connectionFactory" concurrency="1">
+        <rabbit:listener queues="%{rabbitmq.projectName}_etl.increment" ref="etlIncrementMQ" method="handle"/>
+    </rabbit:listener-container>
+
+    <!-- 自定义结构抽取 - 增量抽取 -->
+    <rabbit:queue name="%{rabbitmq.projectName}_etl.tableStructureIncrement" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:direct-exchange name="direct_change" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="%{rabbitmq.projectName}_etl.tableStructureIncrement" key="%{rabbitmq.projectName}_tableStructureIncrementKey"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    <bean id="tableStructureIncrementMQService" class="com.yinker.etl.rabbitmq.receive.service.TableStructureIncrementMQService">
+        <property name="taskExecutor" ref="taskExecutor"/>
+    </bean>
+    <rabbit:listener-container connection-factory="connectionFactory" concurrency="1">
+        <rabbit:listener queues="%{rabbitmq.projectName}_etl.tableStructureIncrement" ref="tableStructureIncrementMQService" method="handle"/>
+    </rabbit:listener-container>
+
+    <!-- 表结构同步 -->
+    <rabbit:queue name="%{rabbitmq.projectName}_etl.synctable" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:direct-exchange name="direct_change" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="%{rabbitmq.projectName}_etl.synctable" key="%{rabbitmq.projectName}_synctableKey"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    <bean id="syncTableInfoMQ" class="com.yinker.etl.rabbitmq.receive.service.SyncTableInfoMQService"/>
+    <rabbit:listener-container connection-factory="connectionFactory" concurrency="1">
+        <rabbit:listener queues="%{rabbitmq.projectName}_etl.synctable" ref="syncTableInfoMQ" method="handle"/>
+    </rabbit:listener-container>
+
+    <!-- mysql导入mongodb -->
+    <rabbit:queue name="%{rabbitmq.projectName}_etl.mysqltomongo" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:direct-exchange name="direct_change" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="%{rabbitmq.projectName}_etl.mysqltomongo" key="%{rabbitmq.projectName}_mysqltomongoKey"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    <bean id="transMysqlToMongoMQ" class="com.yinker.etl.rabbitmq.receive.service.TransMysqlToMongoMQService">
+    </bean>
+    <rabbit:listener-container connection-factory="connectionFactory" concurrency="1">
+        <rabbit:listener queues="%{rabbitmq.projectName}_etl.mysqltomongo" ref="transMysqlToMongoMQ" method="handle"/>
+    </rabbit:listener-container>
+
+    <!-- 发送邮件到MQ -->
+    <rabbit:queue name="%{rabbitmq.projectName}_etl.toemail" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:direct-exchange name="direct_change" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="%{rabbitmq.projectName}_etl.toemail" key="%{rabbitmq.projectName}_toemailKey"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    <bean id="sendMailMQ" class="com.yinker.etl.rabbitmq.receive.service.SendMailMQService"/>
+    <rabbit:listener-container connection-factory="connectionFactory" concurrency="1">
+        <rabbit:listener queues="%{rabbitmq.projectName}_etl.toemail" ref="sendMailMQ" method="handle"/>
+    </rabbit:listener-container>
+</beans>

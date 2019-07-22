@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="PmOperationLog">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			id,
+			user_id,
+			user_name,
+			operation_type,
+			change_detail,
+			change_before,
+			change_after,
+			create_time,
+			last_update_date
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from pm_operation_log
+			<where>	      				
+				<if test="id != null and id != ''">
+					<![CDATA[and id = #{id}]]>
+				</if>
+				<if test="userId != null and userId != ''">
+					<![CDATA[and user_id = #{userId}]]>
+				</if>
+				<if test="userName != null and userName != ''">
+					<![CDATA[and user_name = #{userName}]]>
+				</if>
+				<if test="operationType != null and operationType != ''">
+					<![CDATA[and operation_type = #{operationType}]]>
+				</if>
+				<if test="changeDetail != null and changeDetail != ''">
+					<![CDATA[and change_detail = #{changeDetail}]]>
+				</if>
+				<if test="changeBefore != null and changeBefore != ''">
+					<![CDATA[and change_before = #{changeBefore}]]>
+				</if>
+				<if test="changeAfter != null and changeAfter != ''">
+					<![CDATA[and change_after = #{changeAfter}]]>
+				</if>
+				<if test="createTime != null">
+					<![CDATA[and create_time = #{createTime}]]>
+				</if>
+				<if test="createTimeStart != null">
+					<![CDATA[and create_time >= #{createTimeStart}]]>
+				</if>
+				<if test="createTimeEnd != null">
+					<![CDATA[and create_time <= #{createTimeEnd}]]>
+				</if>
+				<if test="lastUpdateDate != null">
+					<![CDATA[and last_update_date = #{lastUpdateDate}]]>
+				</if>
+				<if test="lastUpdateDateStart != null">
+					<![CDATA[and last_update_date >= #{lastUpdateDateStart}]]>
+				</if>
+				<if test="lastUpdateDateEnd != null">
+					<![CDATA[and last_update_date <= #{lastUpdateDateEnd}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.yinker.etl.pm.model.base.PmOperationLog">
+	    <![CDATA[
+			insert into pm_operation_log (
+				id,
+				user_id,
+				user_name,
+				operation_type,
+				change_detail,
+				change_before,
+				change_after,
+				create_time,
+				last_update_date
+			) values (
+				#{id},
+				#{userId},
+				#{userName},
+				#{operationType},
+				#{changeDetail},
+				#{changeBefore},
+				#{changeAfter},
+				#{createTime},
+				#{lastUpdateDate}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据主键删除数据 -->
+    <delete id="deleteByPK" parameterType="com.yinker.etl.pm.model.base.PmOperationLogPK">
+        <![CDATA[
+			delete from pm_operation_log 
+				where
+				id=#{id}
+    	]]>
+    </delete>
+   
+	<!-- 根据主键更新数据 -->
+	<update id="updateByPK" parameterType="com.yinker.etl.pm.model.base.PmOperationLog">
+		update pm_operation_log 
+			<set>
+				<if test="userId != null"><![CDATA[user_id = #{userId},]]></if>
+				<if test="userName != null"><![CDATA[user_name = #{userName},]]></if>
+				<if test="operationType != null"><![CDATA[operation_type = #{operationType},]]></if>
+				<if test="changeDetail != null"><![CDATA[change_detail = #{changeDetail},]]></if>
+				<if test="changeBefore != null"><![CDATA[change_before = #{changeBefore},]]></if>
+				<if test="changeAfter != null"><![CDATA[change_after = #{changeAfter},]]></if>
+				<if test="createTime != null"><![CDATA[create_time = #{createTime},]]></if>
+				<if test="lastUpdateDate != null"><![CDATA[last_update_date = #{lastUpdateDate},]]></if>
+			</set>
+		where 
+			id=#{id}
+	</update>
+	
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPK" parameterType="com.yinker.etl.pm.model.base.PmOperationLogPK" resultMap="etl.PmOperationLogRM">
+        select <include refid="allColumns" />
+	    <![CDATA[
+			from pm_operation_log 
+			where 
+				id=#{id}
+	    ]]>
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.yinker.etl.pm.model.PmOperationLogQuery" resultMap="etl.PmOperationLogRM">
+		<include refid="querySql"/>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.yinker.etl.pm.model.PmOperationLogQuery" resultMap="etl.PmOperationLogRM">
+		<include refid="querySql"/>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.yinker.etl.pm.model.PmOperationLogQuery" resultType="integer">
+		select count(id) from ( <include refid="querySql"/> ) as tmp_pm_operation_log
+	</select>
+	
+</mapper>

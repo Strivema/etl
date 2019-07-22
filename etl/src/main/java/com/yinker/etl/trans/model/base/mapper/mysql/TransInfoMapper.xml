@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="TransInfo">
+
+    <resultMap type="HashMap" id="idAndTransNameMap">
+        <result column="id" property="id"/>
+        <result column="transName" property="transName"/>
+    </resultMap>
+
+    <!-- 表的所有字段 -->
+    <sql id="allColumns">
+		<![CDATA[
+
+			id,
+			trans_name,
+			simple_name,
+			trans_type,
+			src_db_id,
+			src_db_code,
+			src_tb_code,
+			src_descript,
+			target_db_id,
+			target_db_code,
+			target_tb_code,
+			target_descript,
+			whereStr,
+			is_enable,
+			is_sync_table,
+			is_diy_quartz,
+			type,
+			cron,
+			vindicator,
+			vindicator_mail,
+			remark,
+			owner,
+			create_time,
+			last_update_date
+
+        ]]>
+  	</sql>
+
+    <!-- 表的主键字段 -->
+    <sql id="pkColumns">
+		<![CDATA[
+
+			id
+
+        ]]>
+  	</sql>
+
+    <!-- 根据实体的查询对象进行查询的sql -->
+    <sql id="querySql">
+        select
+        <include refid="allColumns"/>
+        from trans_info
+        <where>
+            <if test="id != null and id != ''">
+                <![CDATA[and id = #{id}]]>
+            </if>
+            <if test="transName != null and transName != ''">
+                <![CDATA[and trans_name like concat('%',#{transName},'%')]]>
+            </if>
+            <if test="simpleName != null and simpleName != ''">
+                <![CDATA[and simple_name like concat('%',#{simpleName},'%')]]>
+            </if>
+            <if test="transType != null and transType != ''">
+                <![CDATA[and trans_type = #{transType}]]>
+            </if>
+            <if test="srcDbId != null and srcDbId != ''">
+                <![CDATA[and src_db_id = #{srcDbId}]]>
+            </if>
+            <if test="srcDbCode != null and srcDbCode != ''">
+                <![CDATA[and src_db_code = #{srcDbCode}]]>
+            </if>
+            <if test="srcTbCode != null and srcTbCode != ''">
+                <![CDATA[and src_tb_code = #{srcTbCode}]]>
+            </if>
+            <if test="srcDescript != null and srcDescript != ''">
+                <![CDATA[and src_descript = #{srcDescript}]]>
+            </if>
+            <if test="targetDbId != null and targetDbId != ''">
+                <![CDATA[and target_db_id = #{targetDbId}]]>
+            </if>
+            <if test="targetDbCode != null and targetDbCode != ''">
+                <![CDATA[and target_db_code = #{targetDbCode}]]>
+            </if>
+            <if test="targetTbCode != null and targetTbCode != ''">
+                <![CDATA[and target_tb_code = #{targetTbCode}]]>
+            </if>
+            <if test="targetDescript != null and targetDescript != ''">
+                <![CDATA[and target_descript = #{targetDescript}]]>
+            </if>
+            <if test="whereStr != null and whereStr != ''">
+                <![CDATA[and whereStr = #{whereStr}]]>
+            </if>
+            <if test="isEnable != null and isEnable != ''">
+                <![CDATA[and is_enable = #{isEnable}]]>
+            </if>
+            <if test="isSyncTable != null and isSyncTable != ''">
+                <![CDATA[and is_sync_table = #{isSyncTable}]]>
+            </if>
+            <if test="isDiyQuartz != null and isDiyQuartz != ''">
+                <![CDATA[and is_diy_quartz = #{isDiyQuartz}]]>
+            </if>
+            <if test="type != null and type != ''">
+                <![CDATA[and type = #{type}]]>
+            </if>
+            <if test="cron != null and cron != ''">
+                <![CDATA[and cron = #{cron}]]>
+            </if>
+            <if test="remark != null and remark != ''">
+                <![CDATA[and remark = #{remark}]]>
+            </if>
+            <if test="owner != null and owner != ''">
+                <![CDATA[and owner = #{owner}]]>
+            </if>
+            <if test="createTime != null">
+                <![CDATA[and create_time = #{createTime}]]>
+            </if>
+            <if test="createTimeStart != null">
+                <![CDATA[and create_time >= #{createTimeStart}]]>
+            </if>
+            <if test="createTimeEnd != null">
+                <![CDATA[and create_time <= #{createTimeEnd}]]>
+            </if>
+            <if test="lastUpdateDate != null">
+                <![CDATA[and last_update_date = #{lastUpdateDate}]]>
+            </if>
+            <if test="lastUpdateDateStart != null">
+                <![CDATA[and last_update_date >= #{lastUpdateDateStart}]]>
+            </if>
+            <if test="lastUpdateDateEnd != null">
+                <![CDATA[and last_update_date <= #{lastUpdateDateEnd}]]>
+            </if>
+            <if test="vindicator != null and vindicator != ''">
+                <![CDATA[and vindicator = #{vindicator}]]>
+            </if>
+            <if test="vindicatorMail != null and vindicatorMail != ''">
+                <![CDATA[and vindicator_mail = #{vindicatorMail}]]>
+            </if>
+            <if test="targetDBArray != null and targetDBArray.length > 0 ">
+                <![CDATA[and ( target_db_id in ]]>
+                <foreach item="item" index="index" collection="targetDBArray" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+                <![CDATA[ )]]>
+            </if>
+            <if test="srcDBArray != null  and srcDBArray.length > 0 ">
+                <![CDATA[and ( src_db_id in ]]>
+                <foreach item="item" index="index" collection="srcDBArray" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+                <![CDATA[ )]]>
+            </if>
+        </where>
+    </sql>
+
+    <!-- 新增数据 -->
+    <insert id="insert" parameterType="com.yinker.etl.trans.model.base.TransInfo">
+	    <![CDATA[
+
+			insert into trans_info (
+				id,
+				trans_name,
+				simple_name,
+				trans_type,
+				src_db_id,
+				src_db_code,
+				src_tb_code,
+				src_descript,
+				target_db_id,
+				target_db_code,
+				target_tb_code,
+				target_descript,
+				whereStr,
+				is_enable,
+				is_sync_table,
+				is_diy_quartz,
+				type,
+				cron,
+				vindicator,
+				vindicator_mail,
+				remark,
+				owner,
+				create_time,
+				last_update_date
+			) values (
+				#{id},
+				#{transName},
+				#{simpleName},
+				#{transType},
+				#{srcDbId},
+				#{srcDbCode},
+				#{srcTbCode},
+				#{srcDescript},
+				#{targetDbId},
+				#{targetDbCode},
+				#{targetTbCode},
+				#{targetDescript},
+				#{whereStr},
+				#{isEnable},
+				#{isSyncTable},
+				#{isDiyQuartz},
+				#{type},
+				#{cron},
+				#{vindicator},
+				#{vindicatorMail},
+				#{remark},
+				#{owner},
+				#{createTime},
+				#{lastUpdateDate}
+			)
+
+        ]]>
+	</insert>
+
+    <!-- 根据主键删除数据 -->
+    <delete id="deleteByPK" parameterType="com.yinker.etl.trans.model.base.TransInfoPK">
+        <![CDATA[
+
+			delete from trans_info 
+				where
+				id=#{id}
+
+        ]]>
+    </delete>
+
+    <!-- 根据主键更新数据 -->
+    <update id="updateByPK" parameterType="com.yinker.etl.trans.model.base.TransInfo">
+        update trans_info
+        <set>
+            <if test="transName != null"><![CDATA[trans_name = #{transName},]]></if>
+            <if test="simpleName != null"><![CDATA[simple_name = #{simpleName},]]></if>
+            <if test="transType != null"><![CDATA[trans_type = #{transType},]]></if>
+            <if test="srcDbId != null"><![CDATA[src_db_id = #{srcDbId},]]></if>
+            <if test="srcDbCode != null"><![CDATA[src_db_code = #{srcDbCode},]]></if>
+            <if test="srcTbCode != null"><![CDATA[src_tb_code = #{srcTbCode},]]></if>
+            <if test="srcDescript != null"><![CDATA[src_descript = #{srcDescript},]]></if>
+            <if test="targetDbId != null"><![CDATA[target_db_id = #{targetDbId},]]></if>
+            <if test="targetDbCode != null"><![CDATA[target_db_code = #{targetDbCode},]]></if>
+            <if test="targetTbCode != null"><![CDATA[target_tb_code = #{targetTbCode},]]></if>
+            <if test="targetDescript != null"><![CDATA[target_descript = #{targetDescript},]]></if>
+            <if test="whereStr != null"><![CDATA[whereStr = #{whereStr},]]></if>
+            <if test="isEnable != null"><![CDATA[is_enable = #{isEnable},]]></if>
+            <if test="isSyncTable != null"><![CDATA[is_sync_table = #{isSyncTable},]]></if>
+            <if test="isDiyQuartz != null"><![CDATA[is_diy_quartz = #{isDiyQuartz},]]></if>
+            <if test="remark != null"><![CDATA[remark = #{remark},]]></if>
+            <if test="vindicator != null"><![CDATA[vindicator = #{vindicator},]]></if>
+            <if test="vindicatorMail != null"><![CDATA[vindicator_mail = #{vindicatorMail},]]></if>
+            <if test="owner != null"><![CDATA[owner = #{owner},]]></if>
+            <if test="createTime != null"><![CDATA[create_time = #{createTime},]]></if>
+            <if test="lastUpdateDate != null"><![CDATA[last_update_date = #{lastUpdateDate},]]></if>
+            type = #{type},
+            cron = #{cron}
+        </set>
+        where
+        id=#{id}
+    </update>
+
+    <!-- 根据主键查询对象 -->
+    <select id="selectByPK" parameterType="com.yinker.etl.trans.model.base.TransInfoPK" resultMap="etl.TransInfoRM">
+        select
+        <include refid="allColumns"/>
+        <![CDATA[
+			from trans_info 
+			where 
+				id=#{id}
+	    ]]>
+    </select>
+
+    <!-- 根据实体对象查询数据结果集 -->
+    <select id="selectByEntity" parameterType="com.yinker.etl.trans.model.TransInfoQuery" resultMap="etl.TransInfoRM">
+        <include refid="querySql"/>
+        <if test="groupByCloume != null and groupByCloume != ''">
+            GROUP BY ${groupByCloume}
+        </if>
+        <if test="sortColumns != null and sortColumns != ''">
+            order by ${sortColumns}
+        </if>
+    </select>
+
+    <!-- 分页查询 -查询结果数据 -->
+    <select id="selectByPage" parameterType="com.yinker.etl.trans.model.TransInfoQuery" resultMap="etl.TransInfoRM">
+        <include refid="querySql"/>
+        <if test="sortColumns != null and sortColumns != ''">
+            order by ${sortColumns}
+        </if>
+    </select>
+
+    <!-- 分页查询 -查询记录总数 -->
+    <select id="selectByPageCount" parameterType="com.yinker.etl.trans.model.TransInfoQuery" resultType="integer">
+        select count(id) from (
+        <include refid="querySql"/>
+        ) as tmp_trans_info
+    </select>
+
+
+    <select id="selectIdAndTransNameMap" resultMap="idAndTransNameMap">
+		(SELECT id,trans_name transName FROM trans_info) UNION ALL (SELECT id,trans_name transName FROM trans_table_structure_info)
+	</select>
+
+    <sql id="transErrorList">
+        SELECT trans.id,
+        trans.trans_name,
+        trans.simple_name,
+        trans.trans_type,
+        trans.src_db_id,
+        trans.src_db_code,
+        trans.target_db_id,
+        trans.target_db_code,
+        trans.src_tb_code,
+        trans.target_tb_code,
+        trans.src_descript,
+        trans.target_descript,
+        trans.is_enable,
+        trans.is_sync_table,
+        trans.whereStr,
+        trans.remark,
+        trans.owner,
+        trans.create_time,
+        tlog.enddate last_update_date
+        FROM trans_info trans,
+        (SELECT * from pm_kettle_trans_log a where a.LINES_REJECTED > 0 or a.`ERRORS` > 0 GROUP BY TRANSNAME) tlog
+        <where>
+            <![CDATA[trans.id=tlog.TRANSNAME]]>
+            <if test="id != null and id != ''">
+                <![CDATA[and trans.id = #{id}]]>
+            </if>
+            <if test="transName != null and transName != ''">
+                <![CDATA[and trans.trans_name like concat('%',#{transName},'%')]]>
+            </if>
+            <if test="simpleName != null and simpleName != ''">
+                <![CDATA[and trans.simple_name like concat('%',#{simpleName},'%')]]>
+            </if>
+            <if test="transType != null and transType != ''">
+                <![CDATA[and trans.trans_type = #{transType}]]>
+            </if>
+            <if test="srcDbId != null and srcDbId != ''">
+                <![CDATA[and trans.src_db_id = #{srcDbId}]]>
+            </if>
+            <if test="srcDbCode != null and srcDbCode != ''">
+                <![CDATA[and trans.src_db_code = #{srcDbCode}]]>
+            </if>
+            <if test="targetDbId != null and targetDbId != ''">
+                <![CDATA[and trans.target_db_id = #{targetDbId}]]>
+            </if>
+            <if test="targetDbCode != null and targetDbCode != ''">
+                <![CDATA[and trans.target_db_code = #{targetDbCode}]]>
+            </if>
+            <if test="srcTbCode != null and srcTbCode != ''">
+                <![CDATA[and trans.src_tb_code like concat('%',#{srcTbCode},'%')]]>
+            </if>
+            <if test="targetTbCode != null and targetTbCode != ''">
+                <![CDATA[and trans.target_tb_code like concat('%',#{targetTbCode},'%')]]>
+            </if>
+            <if test="srcDescript != null and srcDescript != ''">
+                <![CDATA[and trans.src_descript = #{srcDescript}]]>
+            </if>
+            <if test="targetDescript != null and targetDescript != ''">
+                <![CDATA[and trans.target_descript = #{targetDescript}]]>
+            </if>
+            <if test="isEnable != null and isEnable != ''">
+                <![CDATA[and trans.is_enable = #{isEnable}]]>
+            </if>
+            <if test="isSyncTable != null and isSyncTable != ''">
+                <![CDATA[and trans.is_sync_table = #{isSyncTable}]]>
+            </if>
+            <if test="whereStr != null and whereStr != ''">
+                <![CDATA[and trans.whereStr = #{whereStr}]]>
+            </if>
+            <if test="remark != null and remark != ''">
+                <![CDATA[and trans.remark = #{remark}]]>
+            </if>
+            <if test="owner != null and owner != ''">
+                <![CDATA[and trans.owner = #{owner}]]>
+            </if>
+            <if test="createTime != null">
+                <![CDATA[and trans.create_time = #{createTime}]]>
+            </if>
+            <if test="createTimeStart != null">
+                <![CDATA[and trans.create_time >= #{createTimeStart}]]>
+            </if>
+            <if test="createTimeEnd != null">
+                <![CDATA[and trans.create_time <= #{createTimeEnd}]]>
+            </if>
+            <if test="lastUpdateDate != null">
+                <![CDATA[and trans.last_update_date = #{lastUpdateDate}]]>
+            </if>
+            <if test="lastUpdateDateStart != null">
+                <![CDATA[and trans.last_update_date >= #{lastUpdateDateStart}]]>
+            </if>
+            <if test="lastUpdateDateEnd != null">
+                <![CDATA[and trans.last_update_date <= #{lastUpdateDateEnd}]]>
+            </if>
+        </where>
+    </sql>
+    <select id="selectTransErrorList" parameterType="com.yinker.etl.trans.model.TransInfoQuery"
+            resultMap="etl.TransInfoRM">
+        <include refid="transErrorList"/>
+        <if test="sortColumns != null and sortColumns != ''">
+            order by ${sortColumns}
+        </if>
+    </select>
+    <select id="selectTransErrorListCount" parameterType="com.yinker.etl.trans.model.TransInfoQuery"
+            resultType="integer">
+        select count(id) from (
+        <include refid="transErrorList"/>
+        ) as tmp_etl_if_trans_info
+    </select>
+
+    <!-- 新增数据 -->
+    <insert id="toCreateData" parameterType="String">
+		<![CDATA[
+        ${_parameter}
+        ]]>
+	</insert>
+
+    <select id="selectIdByTransName" parameterType="com.yinker.etl.trans.model.TransInfoQuery"
+            resultType="java.lang.String">
+		<![CDATA[
+
+            SELECT DISTINCT id FROM trans_info WHERE trans_name LIKE concat('%',#{transName},'%')
+            UNION ALL SELECT DISTINCT id FROM trans_table_structure_info WHERE trans_name LIKE concat('%',#{transName},'%')
+
+        ]]>
+	</select>
+
+    <select id="selectTransCount" resultType="integer">
+		select count(1) from trans_info
+	</select>
+
+    <update id="updateDbCode" parameterType="java.util.Map">
+		<![CDATA[
+
+            UPDATE trans_info SET src_db_code = #{code} WHERE src_db_id = #{id};
+
+        ]]>
+	</update>
+    <update id="updateDbCode2" parameterType="java.util.Map">
+		<![CDATA[
+
+            UPDATE trans_info SET target_db_code = #{code} WHERE target_db_id = #{id};
+
+        ]]>
+	</update>
+
+    <select id="superManagerSelect" parameterType="String" resultType="java.util.HashMap">
+		${value}
+	</select>
+
+    <select id="getTransDayReport" parameterType="String" resultType="hashmap">
+         SELECT
+        ti.id trans_id,
+        ti.trans_name,
+        ti.src_db_id,
+        ti.src_db_code,
+        ti.target_db_id,
+        ti.target_db_code,
+        IFNULL(ti.src_tb_code,"") src_tb_code,
+        ti.target_tb_code,
+        COUNT(s.id) count,
+        ROUND(MAX(s.use_time),1) max,
+        ROUND(MIN(s.use_time),1) min,
+        ROUND(AVG(s.use_time),1) avg,
+        ti.whereStr sqll
+        FROM
+        trans_status_log s
+        INNER JOIN trans_info ti ON s.trans_id = ti.id
+        WHERE
+        LEFT(s.trans_id,3) != 'STS'
+        AND ti.vindicator_mail = #{_parameter}
+        AND DATE_FORMAT(s.begin_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+        GROUP BY
+        s.trans_id
+
+        UNION ALL
+
+        SELECT
+        ts.id trans_id,
+        ts.trans_name,
+        ts.src_db_id,
+        ts.src_db_code,
+        ts.target_db_id,
+        ts.target_db_code,
+        IFNULL(ts.src_tb_code,"") src_tb_code,
+        ts.target_tb_code,
+        COUNT(s.id) count,
+        ROUND(MAX(s.use_time),1) max,
+        ROUND(MIN(s.use_time),1) min,
+        ROUND(AVG(s.use_time),1) avg,
+        ts.sqlStr sqll
+        FROM
+        trans_status_log s
+        INNER JOIN trans_table_structure_info ts ON s.trans_id = ts.id
+        WHERE
+        LEFT(s.trans_id,3) = 'STS'
+        AND ts.vindicator_mail = #{_parameter}
+        AND DATE_FORMAT(s.begin_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+        GROUP BY
+        s.trans_id
+    </select>
+
+    <select id="getDayReportUsers" resultType="hashmap">
+         SELECT
+        t.vindicator user_name,
+        t.vindicator_mail email
+        FROM
+        (SELECT
+        ti.vindicator,
+        ti.vindicator_mail
+        FROM
+        trans_status_log s
+        INNER JOIN trans_info ti ON s.trans_id = ti.id
+        WHERE
+        LEFT(s.trans_id,3) != 'STS'
+        AND DATE_FORMAT(s.begin_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+
+        UNION ALL
+
+        SELECT
+        ts.vindicator,
+        ts.vindicator_mail
+        FROM
+        trans_status_log s
+        INNER JOIN trans_table_structure_info ts ON s.trans_id = ts.id
+        WHERE
+        LEFT(s.trans_id,3) = 'STS'
+        AND DATE_FORMAT(s.begin_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+        ) t
+        GROUP BY t.vindicator_mail
+    </select>
+
+    <select id="getExceptionReportUsers" resultType="hashmap">
+         SELECT
+        t.vindicator user_name,
+        t.vindicator_mail email
+        FROM
+        (SELECT
+        ti.vindicator,
+        ti.vindicator_mail
+        FROM
+        pm_error_record_log s
+        INNER JOIN trans_info ti ON s.transid = ti.id
+        WHERE
+        LEFT(s.transid,3) != 'STS'
+        AND DATE_FORMAT(s.err_create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+
+        UNION ALL
+
+        SELECT
+        ti.vindicator,
+        ti.vindicator_mail
+        FROM
+        pm_error_record_log s
+        INNER JOIN trans_table_structure_info ti ON s.transid = ti.id
+        WHERE
+        LEFT(s.transid,3) = 'STS'
+        AND DATE_FORMAT(s.err_create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+
+        UNION ALL
+
+        SELECT
+        ti.vindicator,
+        ti.vindicator_mail
+        FROM
+        pm_error_table_structure_log s
+        INNER JOIN trans_info ti ON s.err_trans_id = ti.id
+        WHERE
+        LEFT(s.err_trans_id,3) != 'STS'
+        AND DATE_FORMAT(s.err_create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+
+        UNION ALL
+
+        SELECT
+        ti.vindicator,
+        ti.vindicator_mail
+        FROM
+        pm_error_table_structure_log s
+        INNER JOIN trans_table_structure_info ti ON s.err_trans_id = ti.id
+        WHERE
+        LEFT(s.err_trans_id,3) = 'STS'
+        AND DATE_FORMAT(s.err_create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+        ) t
+        GROUP BY t.vindicator_mail
+    </select>
+
+    <select id="getErrorRecordDayReport" parameterType="String" resultType="hashmap">
+        SELECT
+        s.err_trans_name,
+        s.err_table_name,
+        s.err_create_time,
+        "未处理" err_status,
+        count(err_count) err_count,
+        s.err_desc
+        FROM
+        pm_error_record_log s
+        INNER JOIN trans_info ti ON s.transid = ti.id
+        WHERE
+        LEFT(s.transid,3) != 'STS'
+        AND s.err_status = '1'
+        AND DATE_FORMAT(s.err_create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+        AND ti.vindicator_mail = #{_parameter}
+        AND s.err_desc NOT LIKE '%Duplicate entry%key %'
+        GROUP BY transid,REPLACE(err_desc, CHAR(13), '')
+
+        UNION ALL
+
+        SELECT
+        s.err_trans_name,
+        s.err_table_name,
+        s.err_create_time,
+        "未处理" err_status,
+        count(err_count) err_count,
+        s.err_desc
+        FROM
+        pm_error_record_log s
+        INNER JOIN trans_table_structure_info ti ON s.transid = ti.id
+        WHERE
+        LEFT(s.transid,3) = 'STS'
+        AND s.err_status = '1'
+        AND DATE_FORMAT(s.err_create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+        AND ti.vindicator_mail = #{_parameter}
+        AND s.err_desc NOT LIKE '%Duplicate entry%key %'
+        GROUP BY transid,REPLACE(err_desc, CHAR(13), '')
+    </select>
+
+    <select id="getErrorTSDayReport" parameterType="String" resultType="hashmap">
+        SELECT
+        s.err_trans_name,
+        s.err_table_name,
+        s.err_create_time,
+        "未处理" err_status,
+        s.err_desc
+        FROM
+        pm_error_table_structure_log s
+        INNER JOIN trans_info ti ON s.err_trans_id = ti.id
+        WHERE
+        LEFT(s.err_trans_id,3) != 'STS'
+        AND s.err_status = '0'
+        AND DATE_FORMAT(s.err_create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+        AND ti.vindicator_mail = #{_parameter}
+        AND s.err_desc NOT LIKE '%Duplicate entry%key %'
+        GROUP BY err_trans_id,REPLACE(err_desc, CHAR(13), '')
+
+        UNION ALL
+
+        SELECT
+        s.err_trans_name,
+        s.err_table_name,
+        s.err_create_time,
+        "未处理" err_status,
+        s.err_desc
+        FROM
+        pm_error_table_structure_log s
+        INNER JOIN trans_table_structure_info ti ON s.err_trans_id = ti.id
+        WHERE
+        LEFT(s.err_trans_id,3) = 'STS'
+        AND s.err_status = '0'
+        AND DATE_FORMAT(s.err_create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+        AND ti.vindicator_mail = #{_parameter}
+        AND s.err_desc NOT LIKE '%Duplicate entry%key %'
+        GROUP BY err_trans_id,REPLACE(err_desc, CHAR(13), '')
+    </select>
+</mapper>

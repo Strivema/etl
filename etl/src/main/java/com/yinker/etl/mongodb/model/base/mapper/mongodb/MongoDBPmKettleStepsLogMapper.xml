@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="etl.PmKettleStepsLog" class="com.yinker.etl.mongodb.basedao.MongoDBMapper">
+
+		<property name="collectionName" value="pm_kettle_steps_log" />
+
+		<property name="resultMap">
+			<map>
+				<entry key="etl.PmKettleStepsLog">
+					<map>
+						 <entry key="id" value="_id"  />
+						 <entry key="ID_BATCH" value="idBatch"  />
+						 <entry key="CHANNEL_ID" value="channelId"  />
+						 <entry key="TRANSNAME" value="transname"  />
+						 <entry key="STEPNAME" value="stepname"  />
+						 <entry key="LINES_READ" value="linesRead"  />
+						 <entry key="LINES_WRITTEN" value="linesWritten"  />
+						 <entry key="LINES_UPDATED" value="linesUpdated"  />
+						 <entry key="LINES_INPUT" value="linesInput"  />
+						 <entry key="LINES_OUTPUT" value="linesOutput"  />
+						 <entry key="LINES_REJECTED" value="linesRejected" /> 
+						 <entry key="ERRORS" value="errors"  />
+						 <entry key="LOG_DATE" value="logDate" />
+						 <entry key="STEP_COPY" value="stepCopy" />
+					</map>
+				</entry>
+			</map>
+		</property>
+
+		<property name="sql">
+			<map>
+				<!-- 插入数据 -->
+				<entry key="insert">
+					<bean class="com.yinker.etl.mongodb.basedao.MongoDBMapperSql">
+						<property name="resultMap" value="etl.PmKettleStepsLog"></property>
+						<property name="condition" value=""/>
+					</bean>
+				</entry>
+				
+				<!-- 根据_id查询数据 -->
+				<entry key="selectByOne">
+					<bean class="com.yinker.etl.mongodb.basedao.MongoDBMapperSql">
+						<property name="resultMap" value="etl.PmKettleStepsLog"></property>
+						<property name="resultType" value="com.yinker.etl.pm.model.base.PmKettleStepsLog" />
+						<property name="condition">
+							<value>
+								<![CDATA[
+									return '{"id":' + obj.id + '}'
+								]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+				
+				<!-- 按条件查询任务列表 -->
+				<entry key="getByCondition">
+					<bean class="com.yinker.etl.mongodb.basedao.MongoDBMapperSql">
+						<property name="resultMap" value="etl.PmKettleStepsLog"></property>
+						<property name="resultType" value="com.yinker.etl.pm.model.base.PmKettleStepsLog" />
+						<property name="sortColumns" value="LOG_DATE desc" />
+						<property name="condition">
+							<value>
+								<![CDATA[
+									def q = '{'
+									if(obj.IDBATCH != null && obj.IDBATCH != '')
+										q = q + '"idBatch": ' + obj.IDBATCH + ','
+									if(obj.TRANSNAME != null && obj.TRANSNAME != '')
+										q = q + '"transname":{"$regex":".*' + obj.TRANSNAME + '.*"},'
+									if(obj.STEPNAME != null && obj.STEPNAME != '')
+										q = q + '"stepname":{"$regex":".*' + obj.STEPNAME + '.*"},'
+									if(obj.STARTDATE != null && obj.STARTDATE != '')
+										q = q + '"STARTDATE":{"$gte":{"$date":' + obj.STARTDATE.getTime() + '}},'
+									if(obj.ENDDATE != null && obj.ENDDATE != '')
+										q = q + '"ENDDATE":{"$lte":{"$date":' + obj.ENDDATE.getTime() + '}},'
+									if(q.endsWith(','))
+										q = q.substring(0,q.length() - 1)
+									q = q + '}'
+									return q
+								]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+</beans>

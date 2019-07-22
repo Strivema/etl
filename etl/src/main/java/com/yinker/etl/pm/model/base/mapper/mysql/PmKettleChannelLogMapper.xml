@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="PmKettleChannelLog">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			id,
+			ID_BATCH,
+			CHANNEL_ID,
+			LOG_DATE,
+			LOGGING_OBJECT_TYPE,
+			OBJECT_NAME,
+			OBJECT_COPY,
+			REPOSITORY_DIRECTORY,
+			FILENAME,
+			OBJECT_ID,
+			OBJECT_REVISION,
+			PARENT_CHANNEL_ID,
+			ROOT_CHANNEL_ID
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from pm_kettle_channel_log
+			<where>
+
+				<if test="id != null">
+					<![CDATA[and id = #{id}]]>
+				</if>
+				<if test="idStart != null">
+					<![CDATA[and id >= #{idStart}]]>
+				</if>
+				<if test="idEnd != null">
+					<![CDATA[and id <= #{idEnd}]]>
+				</if>
+				<if test="idBatch != null">
+					<![CDATA[and ID_BATCH = #{idBatch}]]>
+				</if>
+				<if test="idBatchStart != null">
+					<![CDATA[and ID_BATCH >= #{idBatchStart}]]>
+				</if>
+				<if test="idBatchEnd != null">
+					<![CDATA[and ID_BATCH <= #{idBatchEnd}]]>
+				</if>
+				<if test="channelId != null and channelId != ''">
+					<![CDATA[and CHANNEL_ID = #{channelId}]]>
+				</if>
+				<if test="logDate != null">
+					<![CDATA[and LOG_DATE = #{logDate}]]>
+				</if>
+				<if test="logDateStart != null">
+					<![CDATA[and LOG_DATE >= #{logDateStart}]]>
+				</if>
+				<if test="logDateEnd != null">
+					<![CDATA[and LOG_DATE <= #{logDateEnd}]]>
+				</if>
+				<if test="loggingObjectType != null and loggingObjectType != ''">
+					<![CDATA[and LOGGING_OBJECT_TYPE = #{loggingObjectType}]]>
+				</if>
+				<if test="objectName != null and objectName != ''">
+					<![CDATA[and OBJECT_NAME = #{objectName}]]>
+				</if>
+				<if test="objectCopy != null and objectCopy != ''">
+					<![CDATA[and OBJECT_COPY = #{objectCopy}]]>
+				</if>
+				<if test="repositoryDirectory != null and repositoryDirectory != ''">
+					<![CDATA[and REPOSITORY_DIRECTORY = #{repositoryDirectory}]]>
+				</if>
+				<if test="filename != null and filename != ''">
+					<![CDATA[and FILENAME = #{filename}]]>
+				</if>
+				<if test="objectId != null and objectId != ''">
+					<![CDATA[and OBJECT_ID = #{objectId}]]>
+				</if>
+				<if test="objectRevision != null and objectRevision != ''">
+					<![CDATA[and OBJECT_REVISION = #{objectRevision}]]>
+				</if>
+				<if test="parentChannelId != null and parentChannelId != ''">
+					<![CDATA[and PARENT_CHANNEL_ID = #{parentChannelId}]]>
+				</if>
+				<if test="rootChannelId != null and rootChannelId != ''">
+					<![CDATA[and ROOT_CHANNEL_ID = #{rootChannelId}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.yinker.etl.pm.model.base.PmKettleChannelLog">
+	    <![CDATA[
+			insert into pm_kettle_channel_log (
+				id,
+				ID_BATCH,
+				CHANNEL_ID,
+				LOG_DATE,
+				LOGGING_OBJECT_TYPE,
+				OBJECT_NAME,
+				OBJECT_COPY,
+				REPOSITORY_DIRECTORY,
+				FILENAME,
+				OBJECT_ID,
+				OBJECT_REVISION,
+				PARENT_CHANNEL_ID,
+				ROOT_CHANNEL_ID
+			) values (
+				#{id},
+				#{idBatch},
+				#{channelId},
+				#{logDate},
+				#{loggingObjectType},
+				#{objectName},
+				#{objectCopy},
+				#{repositoryDirectory},
+				#{filename},
+				#{objectId},
+				#{objectRevision},
+				#{parentChannelId},
+				#{rootChannelId}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据主键删除数据 -->
+    <delete id="deleteByPK" parameterType="com.yinker.etl.pm.model.base.PmKettleChannelLogPK">
+        <![CDATA[
+			delete from pm_kettle_channel_log 
+				where
+				id=#{id}
+    	]]>
+    </delete>
+   
+	<!-- 根据主键更新数据 -->
+	<update id="updateByPK" parameterType="com.yinker.etl.pm.model.base.PmKettleChannelLog">
+		update pm_kettle_channel_log 
+			<set>
+				<if test="idBatch != null"><![CDATA[ID_BATCH = #{idBatch},]]></if>
+				<if test="channelId != null"><![CDATA[CHANNEL_ID = #{channelId},]]></if>
+				<if test="logDate != null"><![CDATA[LOG_DATE = #{logDate},]]></if>
+				<if test="loggingObjectType != null"><![CDATA[LOGGING_OBJECT_TYPE = #{loggingObjectType},]]></if>
+				<if test="objectName != null"><![CDATA[OBJECT_NAME = #{objectName},]]></if>
+				<if test="objectCopy != null"><![CDATA[OBJECT_COPY = #{objectCopy},]]></if>
+				<if test="repositoryDirectory != null"><![CDATA[REPOSITORY_DIRECTORY = #{repositoryDirectory},]]></if>
+				<if test="filename != null"><![CDATA[FILENAME = #{filename},]]></if>
+				<if test="objectId != null"><![CDATA[OBJECT_ID = #{objectId},]]></if>
+				<if test="objectRevision != null"><![CDATA[OBJECT_REVISION = #{objectRevision},]]></if>
+				<if test="parentChannelId != null"><![CDATA[PARENT_CHANNEL_ID = #{parentChannelId},]]></if>
+				<if test="rootChannelId != null"><![CDATA[ROOT_CHANNEL_ID = #{rootChannelId},]]></if>
+			</set>
+		where 
+			id=#{id}
+	</update>
+	
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPK" parameterType="com.yinker.etl.pm.model.base.PmKettleChannelLogPK" resultMap="etl.PmKettleChannelLogRM">
+        select <include refid="allColumns" />
+	    <![CDATA[
+			from pm_kettle_channel_log 
+			where 
+				id=#{id}
+	    ]]>
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.yinker.etl.pm.model.PmKettleChannelLogQuery" resultMap="etl.PmKettleChannelLogRM">
+		<include refid="querySql"/>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.yinker.etl.pm.model.PmKettleChannelLogQuery" resultMap="etl.PmKettleChannelLogRM">
+		<include refid="querySql"/>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.yinker.etl.pm.model.PmKettleChannelLogQuery" resultType="integer">
+		select count(id) from ( <include refid="querySql"/> ) as tmp_pm_kettle_channel_log
+	</select>
+	
+</mapper>

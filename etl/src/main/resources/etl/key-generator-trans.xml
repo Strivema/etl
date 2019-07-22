@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!-- 主键生成器配置 -->
+	<bean id="etlKeyGeneratorContainerTrans" class="org.zwork.common.key.KeyGeneratorContainer">
+		<!-- 数据源配置 -->
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+        </property>
+		<!-- 序列键数据上下文 -->
+		<property name="context">
+			<map>
+				<entry key="keyGeneratorContext">
+					<ref bean="etlKeyGeneratorContext"/>
+				</entry>
+			</map>
+		</property>
+		
+		<!-- 定义序列键生成器 -->
+		<property name="keyGeneratorConfigs">
+			<map>				
+				<entry key="transInfoId">
+					<bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+						<property name="condition" value='trans_info:id' />
+						<!-- 默认为20位顺序号 -->
+						<property name="keyPattern" value='%s' />
+						<property name="length" value="20" />
+					</bean>
+				</entry>
+				<entry key="transConfigChangeLogId">
+					<bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+						<property name="condition" value='trans_config_change_log:id' />
+						<!-- 默认为20位顺序号 -->
+						<property name="keyPattern" value='%s' />
+						<property name="length" value="20" />
+					</bean>
+				</entry>
+				<entry key="transStatusLogId">
+					<bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+						<property name="condition" value='trans_status_log:id' />
+						<!-- 默认为20位顺序号 -->
+						<property name="keyPattern" value='%s' />
+						<property name="length" value="20" />
+					</bean>
+				</entry>
+				<entry key="transTimebatchLogId">
+					<bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+						<property name="condition" value='trans_timebatch_log:id' />
+						<!-- 默认为20位顺序号 -->
+						<property name="keyPattern" value='%s' />
+						<property name="length" value="20" />
+					</bean>
+				</entry>
+				<entry key="transTableStructureInfoId">
+					<bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+						<property name="condition" value='trans_table_structure_info:id' />
+						<!-- 默认为20位顺序号 -->
+						<property name="keyPattern" value='STS%s' />
+						<property name="length" value="17" />
+					</bean>
+				</entry>
+				<entry key="transWarnConfigId">
+					<bean class="org.zwork.common.key.config.ConditionKeyGeneratorConfig">
+						<property name="condition" value='trans_warn_config:id' />
+						<!-- 默认为20位顺序号 -->
+						<property name="keyPattern" value='%s' />
+						<property name="length" value="20" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+</beans>

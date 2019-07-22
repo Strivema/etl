@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- namespace命名规则：项目或者构件的英文简写-->
+<mapper namespace="etl">
+	<resultMap id="PmDataSourceRM" type="com.yinker.etl.pm.model.base.PmDataSource">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="code" column="code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="databaseName" column="database_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="databaseType" column="database_type" javaType="String" jdbcType="VARCHAR"/>
+		<result property="databaseCategory" column="database_category" javaType="String" jdbcType="VARCHAR"/>
+		<result property="hostName" column="host_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="userName" column="user_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="port" column="port" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="password" column="password" javaType="String" jdbcType="VARCHAR"/>
+		<result property="owner" column="owner" javaType="String" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<resultMap id="PmOperationLogRM" type="com.yinker.etl.pm.model.base.PmOperationLog">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="userId" column="user_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="userName" column="user_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="operationType" column="operation_type" javaType="String" jdbcType="VARCHAR"/>
+		<result property="changeDetail" column="change_detail" javaType="String" jdbcType="VARCHAR"/>
+		<result property="changeBefore" column="change_before" javaType="String" jdbcType="VARCHAR"/>
+		<result property="changeAfter" column="change_after" javaType="String" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateDate" column="last_update_date" javaType="Date" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<resultMap id="PmKettleTransLogRM" type="com.yinker.etl.pm.model.base.PmKettleTransLog">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="idBatch" column="ID_BATCH" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="channelId" column="CHANNEL_ID" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transname" column="TRANSNAME" javaType="String" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" javaType="String" jdbcType="VARCHAR"/>
+		<result property="linesRead" column="LINES_READ" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesWritten" column="LINES_WRITTEN" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesUpdated" column="LINES_UPDATED" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesInput" column="LINES_INPUT" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesOutput" column="LINES_OUTPUT" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesRejected" column="LINES_REJECTED" javaType="Long" jdbcType="INTEGER"/>
+		<result property="errors" column="ERRORS" javaType="Long" jdbcType="INTEGER"/>
+		<result property="startdate" column="STARTDATE" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="enddate" column="ENDDATE" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="logdate" column="LOGDATE" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="depdate" column="DEPDATE" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="replaydate" column="REPLAYDATE" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="logField" column="LOG_FIELD" javaType="String" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="PmKettleStepsLogRM" type="com.yinker.etl.pm.model.base.PmKettleStepsLog">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="idBatch" column="ID_BATCH" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="channelId" column="CHANNEL_ID" javaType="String" jdbcType="VARCHAR"/>
+		<result property="logDate" column="LOG_DATE" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="transname" column="TRANSNAME" javaType="String" jdbcType="VARCHAR"/>
+		<result property="stepname" column="STEPNAME" javaType="String" jdbcType="VARCHAR"/>
+		<result property="stepCopy" column="STEP_COPY" javaType="String" jdbcType="VARCHAR"/>
+		<result property="linesRead" column="LINES_READ" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesWritten" column="LINES_WRITTEN" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesUpdated" column="LINES_UPDATED" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesInput" column="LINES_INPUT" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesOutput" column="LINES_OUTPUT" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesRejected" column="LINES_REJECTED" javaType="Long" jdbcType="INTEGER"/>
+		<result property="errors" column="ERRORS" javaType="Long" jdbcType="INTEGER"/>
+	</resultMap>
+	<resultMap id="PmErrorRecordLogRM" type="com.yinker.etl.pm.model.base.PmErrorRecordLog">
+		<id property="errorId" column="error_id" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errTransName" column="err_trans_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errTableName" column="err_table_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errStatus" column="err_status" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errCreateTime" column="err_create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="errCount" column="err_count" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errDesc" column="err_desc" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errField" column="err_field" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errCode" column="err_code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transId" column="transid" javaType="String" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="PmKettleJobLogRM" type="com.yinker.etl.pm.model.base.PmKettleJobLog">
+		<id property="idJob" column="ID_JOB" javaType="String" jdbcType="VARCHAR"/>
+		<result property="channelId" column="CHANNEL_ID" javaType="String" jdbcType="VARCHAR"/>
+		<result property="jobname" column="JOBNAME" javaType="String" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" javaType="String" jdbcType="VARCHAR"/>
+		<result property="linesRead" column="LINES_READ" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesWritten" column="LINES_WRITTEN" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesUpdated" column="LINES_UPDATED" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesInput" column="LINES_INPUT" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesOutput" column="LINES_OUTPUT" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesRejected" column="LINES_REJECTED" javaType="Long" jdbcType="INTEGER"/>
+		<result property="errors" column="ERRORS" javaType="Long" jdbcType="INTEGER"/>
+		<result property="startdate" column="STARTDATE" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="enddate" column="ENDDATE" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="logdate" column="LOGDATE" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="depdate" column="DEPDATE" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="replaydate" column="REPLAYDATE" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="logField" column="LOG_FIELD" javaType="String" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="PmKettleJobItemLogRM" type="com.yinker.etl.pm.model.base.PmKettleJobItemLog">
+		<id property="id" column="id" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="idBatch" column="ID_BATCH" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="channelId" column="CHANNEL_ID" javaType="String" jdbcType="VARCHAR"/>
+		<result property="logDate" column="LOG_DATE" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="transname" column="TRANSNAME" javaType="String" jdbcType="VARCHAR"/>
+		<result property="stepname" column="STEPNAME" javaType="String" jdbcType="VARCHAR"/>
+		<result property="linesRead" column="LINES_READ" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesWritten" column="LINES_WRITTEN" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesUpdated" column="LINES_UPDATED" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesInput" column="LINES_INPUT" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesOutput" column="LINES_OUTPUT" javaType="Long" jdbcType="INTEGER"/>
+		<result property="linesRejected" column="LINES_REJECTED" javaType="Long" jdbcType="INTEGER"/>
+		<result property="errors" column="ERRORS" javaType="Long" jdbcType="INTEGER"/>
+		<result property="result" column="RESULT" javaType="Integer" jdbcType="TINYINT"/>
+		<result property="nrResultRows" column="NR_RESULT_ROWS" javaType="Long" jdbcType="INTEGER"/>
+		<result property="nrResultFiles" column="NR_RESULT_FILES" javaType="Long" jdbcType="INTEGER"/>
+	</resultMap>
+	<resultMap id="PmRuntransErrorLogRM" type="com.yinker.etl.pm.model.base.PmRuntransErrorLog">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transId" column="trans_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transName" column="trans_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="logDate" column="log_date" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="errorDesc" column="error_desc" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errorType" column="error_type" javaType="String" jdbcType="CHAR"/>
+	</resultMap>
+	<resultMap id="PmErrorTableStructureLogRM" type="com.yinker.etl.pm.model.base.PmErrorTableStructureLog">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errTransId" column="err_ttrans_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errTransName" column="err_trans_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errTableName" column="err_table_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errColumnName" column="err_column_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errStatus" column="err_status" javaType="String" jdbcType="VARCHAR"/>
+		<result property="errCreateTime" column="err_create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="errDesc" column="err_desc" javaType="String" jdbcType="VARCHAR"/>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="PmMongoTransferBatchLogRM" type="com.yinker.etl.pm.model.base.PmMongoTransferBatchLog">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="batchId" column="batch_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="startTime" column="start_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="endTime" column="end_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="boolException" column="bool_exception" javaType="String" jdbcType="VARCHAR"/>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="operator" column="operator" javaType="String" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="PmMongoTransferTableNameInfoRM" type="com.yinker.etl.pm.model.base.PmMongoTransferTableNameInfo">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="tableName" column="table_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="isDiyRetentionTime" column="is_diy_retention_time" javaType="String" jdbcType="VARCHAR"/>
+		<result property="retentionTime" column="retention_time" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="retentionColumnName" column="retention_column_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="step" column="step" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="isDelete" column="is_delete" javaType="String" jdbcType="VARCHAR"/>
+		<result property="state" column="state" javaType="String" jdbcType="VARCHAR"/>
+		<result property="classPath" column="class_path" javaType="String" jdbcType="VARCHAR"/>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="operator" column="operator" javaType="String" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="PmGroupRM" type="com.yinker.etl.pm.model.base.PmGroup">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transCount" column="trans_count" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"/>
+		<result property="status" column="status" javaType="String" jdbcType="VARCHAR"/>
+		<result property="owner" column="owner" javaType="String" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<collection property="pmGroupUsers" column="{groupId=id}" ofType="java.util.List" select="PmGroupUser.selectByEntity"/>
+		<collection property="pmDatasourceGroups" column="{groupId=id}" ofType="java.util.List" select="PmDatasourceGroup.selectByEntity"/>
+	</resultMap>
+	<resultMap id="PmGroupUserRM" type="com.yinker.etl.pm.model.base.PmGroupUser">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="groupId" column="group_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="owner" column="owner" javaType="String" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<resultMap id="PmDatasourceGroupRM" type="com.yinker.etl.pm.model.base.PmDatasourceGroup">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="groupId" column="group_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="datasourceType" column="datasource_type" javaType="String" jdbcType="VARCHAR"/>
+		<result property="datasourceId" column="datasource_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="owner" column="owner" javaType="String" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<association property="pmDataSource" column="{id=datasource_id}" select="PmDataSource.selectByPK"/>
+	</resultMap>
+	<resultMap id="PmKettleChannelLogRM" type="com.yinker.etl.pm.model.base.PmKettleChannelLog">
+		<id property="id" column="id" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="idBatch" column="ID_BATCH" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="channelId" column="CHANNEL_ID" javaType="String" jdbcType="VARCHAR"/>
+		<result property="logDate" column="LOG_DATE" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="loggingObjectType" column="LOGGING_OBJECT_TYPE" javaType="String" jdbcType="VARCHAR"/>
+		<result property="objectName" column="OBJECT_NAME" javaType="String" jdbcType="VARCHAR"/>
+		<result property="objectCopy" column="OBJECT_COPY" javaType="String" jdbcType="VARCHAR"/>
+		<result property="repositoryDirectory" column="REPOSITORY_DIRECTORY" javaType="String" jdbcType="VARCHAR"/>
+		<result property="filename" column="FILENAME" javaType="String" jdbcType="VARCHAR"/>
+		<result property="objectId" column="OBJECT_ID" javaType="String" jdbcType="VARCHAR"/>
+		<result property="objectRevision" column="OBJECT_REVISION" javaType="String" jdbcType="VARCHAR"/>
+		<result property="parentChannelId" column="PARENT_CHANNEL_ID" javaType="String" jdbcType="VARCHAR"/>
+		<result property="rootChannelId" column="ROOT_CHANNEL_ID" javaType="String" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="PmMailTemplateRM" type="com.yinker.etl.pm.model.base.PmMailTemplate">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="serverId" column="server_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="code" column="code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="addresser" column="addresser" javaType="String" jdbcType="VARCHAR"/>
+		<result property="title" column="title" javaType="String" jdbcType="VARCHAR"/>
+		<result property="body" column="body" javaType="String" jdbcType="VARCHAR"/>
+		<result property="status" column="status" javaType="String" jdbcType="VARCHAR"/>
+		<result property="description" column="description" javaType="String" jdbcType="VARCHAR"/>
+		<result property="owner" column="owner" javaType="String" jdbcType="VARCHAR"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<resultMap id="PmMailUserRM" type="com.yinker.etl.pm.model.base.PmMailUser">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="phone" column="phone" javaType="String" jdbcType="VARCHAR"/>
+		<result property="email" column="email" javaType="String" jdbcType="VARCHAR"/>
+		<result property="group" column="group" javaType="String" jdbcType="VARCHAR"/>
+		<result property="owner" column="owner" javaType="String" jdbcType="VARCHAR"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<resultMap id="PmMailSendLogRM" type="com.yinker.etl.pm.model.base.PmMailSendLog">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="addresser" column="addresser" javaType="String" jdbcType="VARCHAR"/>
+		<result property="title" column="title" javaType="String" jdbcType="VARCHAR"/>
+		<result property="body" column="body" javaType="String" jdbcType="VARCHAR"/>
+		<result property="isFile" column="is_file" javaType="String" jdbcType="VARCHAR"/>
+		<result property="recipientsIds" column="recipients_ids" javaType="String" jdbcType="VARCHAR"/>
+		<result property="recipientsNames" column="recipients_names" javaType="String" jdbcType="VARCHAR"/>
+		<result property="recipientsGroup" column="recipients_group" javaType="String" jdbcType="VARCHAR"/>
+		<result property="owner" column="owner" javaType="String" jdbcType="VARCHAR"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<resultMap id="PmSystemInfoLogRM" type="com.yinker.etl.pm.model.base.PmSystemInfoLog">
+		<id property="id" column="id" javaType="Integer" jdbcType="INTEGER"/>
+		<result property="sn" column="sn" javaType="String" jdbcType="VARCHAR"/>
+		<result property="serverName" column="server_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="ip" column="ip" javaType="String" jdbcType="VARCHAR"/>
+		<result property="osName" column="os_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="startTime" column="start_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="status" column="status" javaType="String" jdbcType="VARCHAR"/>
+		<result property="destoryTime" column="destory_time" javaType="Date" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<resultMap id="PmMailServerConfigRM" type="com.yinker.etl.pm.model.base.PmMailServerConfig">
+		<id property="id" column="id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="code" column="code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="host" column="host" javaType="String" jdbcType="VARCHAR"/>
+		<result property="port" column="port" javaType="String" jdbcType="VARCHAR"/>
+		<result property="protocol" column="protocol" javaType="String" jdbcType="VARCHAR"/>
+		<result property="userName" column="user_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="password" column="password" javaType="String" jdbcType="VARCHAR"/>
+		<result property="owner" column="owner" javaType="String" jdbcType="VARCHAR"/>
+		<result property="lastUpdateTime" column="last_update_time" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+	</resultMap>
+</mapper>

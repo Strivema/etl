@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="PmMongoTransferTableNameInfo">
+
+	<resultMap type="HashMap" id="etlLogListMap">
+		<result column="id" property="id" />
+		<result column="name" property="name"/>
+	</resultMap>
+
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			id,
+			table_name,
+			step,
+			is_delete,
+			is_diy_retention_time,
+			retention_time,
+			retention_column_name,
+			state,
+			class_path,
+			remark,
+			create_time,
+			last_update_time,
+			operator
+	    ]]>
+	</sql>
+
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			id
+	    ]]>
+	</sql>
+
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select
+		<include refid="allColumns" />
+		from pm_mongo_transfer_table_name_info
+		<where>
+			<if test="id != null and id != ''">
+					<![CDATA[and id = #{id}]]>
+			</if>
+			<if test="tableName != null and tableName != ''">
+					<![CDATA[and table_name = #{tableName}]]>
+			</if>
+			<if test="isDiyRetentionTime != null and isDiyRetentionTime != ''">
+				<![CDATA[and is_diy_retention_time = #{isDiyRetentionTime}]]>
+			</if>
+			<if test="retentionTime != null and retentionTime != ''">
+				<![CDATA[and retention_time = #{retentionTime}]]>
+			</if>
+			<if test="retentionColumnName != null and retentionColumnName != ''">
+				<![CDATA[and retention_column_name = #{retentionColumnName}]]>
+			</if>
+			<if test="state != null and state != ''">
+				<![CDATA[and state = #{state}]]>
+			</if>
+			<if test="isDelete != null and isDelete != ''">
+				<![CDATA[and is_delete = #{isDelete}]]>
+			</if>
+			<if test="createTimeStart != null">
+						<![CDATA[and date_format(create_time,'%Y-%m-%d') >= date_format(#{createTimeStart},'%Y-%m-%d')]]>
+			</if>
+			<if test="createTimeEnd != null">
+						<![CDATA[and date_format(create_time,'%Y-%m-%d') <= date_format(#{createTimeEnd},'%Y-%m-%d')]]>
+			</if>
+		</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert"
+		parameterType="com.yinker.etl.pm.model.base.PmMongoTransferTableNameInfo">
+	    <![CDATA[
+			insert into pm_mongo_transfer_table_name_info (
+			    id,
+				table_name,
+				is_diy_retention_time,
+			    retention_time,
+			    retention_column_name,
+				step,
+				is_delete,
+				state,
+				class_path,
+				remark,
+				create_time,
+				operator,
+				last_update_time
+			) values (
+			    #{id},
+				#{tableName},
+				#{isDiyRetentionTime},
+				#{retentionTime},
+				#{retentionColumnName},
+				#{step},
+				#{isDelete},
+				#{state},
+				#{classPath},
+				#{remark},
+				#{createTime},
+				#{operator},
+				#{lastUpdateTime}
+			)
+		]]>
+	</insert>
+
+	<!-- 根据主键删除数据 -->
+	<delete id="deleteByPK" parameterType="com.yinker.etl.pm.model.base.PmMongoTransferTableNameInfoPK">
+        <![CDATA[
+			delete from pm_mongo_transfer_table_name_info
+				where
+				id=#{id}
+    	]]>
+	</delete>
+	
+	<!-- 根据主键更新数据 -->
+	<update id="updateByPK" parameterType="com.yinker.etl.pm.model.base.PmMongoTransferTableNameInfo">
+		update pm_mongo_transfer_table_name_info
+			<set>
+				<if test="tableName != null"><![CDATA[table_name = #{tableName},]]></if>
+				<if test="isDiyRetentionTime != null"><![CDATA[is_diy_retention_time = #{isDiyRetentionTime},]]></if>
+				<![CDATA[retention_time = #{retentionTime},]]>
+				<if test="retentionColumnName != null"><![CDATA[retention_column_name = #{retentionColumnName},]]></if>
+				<if test="step != null"><![CDATA[step = #{step},]]></if>
+				<if test="isDelete != null"><![CDATA[is_delete = #{isDelete},]]></if>
+				<if test="state != null"><![CDATA[state = #{state},]]></if>
+				<if test="classPath != null"><![CDATA[class_path = #{classPath},]]></if>
+				<if test="remark != null"><![CDATA[remark = #{remark},]]></if>
+				<if test="createTime != null"><![CDATA[create_time = #{createTime},]]></if>
+				<if test="operator != null"><![CDATA[remark = #{remark},]]></if>
+				<if test="lastUpdateTime != null"><![CDATA[last_update_time = #{lastUpdateTime},]]></if>
+			</set>
+		where 
+			id=#{id}
+	</update>
+
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPK"
+		parameterType="com.yinker.etl.pm.model.base.PmMongoTransferTableNameInfoPK"
+		resultMap="etl.PmMongoTransferTableNameInfoRM">
+		select
+		<include refid="allColumns" />
+	    <![CDATA[
+			from pm_mongo_transfer_table_name_info
+			where 
+			id=#{id}
+	    ]]>
+	</select>
+
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity"
+		parameterType="com.yinker.etl.pm.model.PmMongoTransferTableNameInfoQuery"
+		resultMap="etl.PmMongoTransferTableNameInfoRM">
+		<include refid="querySql" />
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage"
+		parameterType="com.yinker.etl.pm.model.PmMongoTransferTableNameInfoQuery"
+		resultMap="etl.PmMongoTransferTableNameInfoRM">
+		<include refid="querySql" />
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>
+	</select>
+
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount"
+		parameterType="com.yinker.etl.pm.model.PmMongoTransferTableNameInfoQuery"
+		resultType="integer">
+		select count(id) from (
+		<include refid="querySql" />
+		) as pm_mongo_transfer_table_name_info
+	</select>
+
+	<select id="selectEtlLogList" resultMap="etlLogListMap">
+		<![CDATA[
+		SELECT @rownum:=@rownum+1 id,TABLE_NAME name FROM information_schema.TABLES,(SELECT @rownum:=0) r WHERE TABLE_SCHEMA = 'etl' AND TABLE_NAME LIKE '%log'
+		]]>
+	</select>
+
+
+	<select id="selectTransSteps" parameterType="java.lang.String" resultType="int">
+		<![CDATA[
+		SELECT
+        ROUND((TABLE_ROWS * 20 )/ (data_length / ( 1024 * 1024))) steps
+        FROM information_schema.TABLES
+        WHERE TABLE_SCHEMA = 'etl'
+        AND TABLE_NAME = #{_parameter}
+		]]>
+	</select>
+</mapper>

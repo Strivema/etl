@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="SyncTableInfo">
+
+    <!-- 根据实体对象查询数据结果集 -->
+    <select id="selectByEntity" parameterType="com.yinker.etl.trans.model.SyncTableInfoQuery" resultMap="etl.SyncTableInfoRM">
+        select
+        c.table_schema,
+        c.table_name,
+        c.column_key,
+        c.column_name,
+        c.column_default,
+        c.is_nullable,
+        c.data_type,
+        c.column_type,
+        c.column_comment,
+        c.extra,
+        k.ordinal_position
+        from information_schema. COLUMNS c
+        LEFT JOIN information_schema.KEY_COLUMN_USAGE k ON c.TABLE_SCHEMA = k.TABLE_SCHEMA
+        AND c.TABLE_NAME = k.TABLE_NAME
+        AND c.COLUMN_NAME = k.COLUMN_NAME
+        <where>
+            <if test="tableSchema != null and tableSchema != ''">
+                <![CDATA[and c.table_schema = #{tableSchema}]]>
+            </if>
+            <if test="tableName != null and tableName != ''">
+                <![CDATA[and c.table_name = #{tableName}]]>
+            </if>
+            <if test="columnKey != null and columnKey != ''">
+                <![CDATA[and c.column_key = #{columnKey}]]>
+            </if>
+        </where>
+    </select>
+
+    <update id="createDpTable" parameterType="com.yinker.etl.trans.model.base.SyncTableInfo">
+
+        CREATE TABLE <![CDATA[${tableName}]]> (
+        <if test="idName != null and idName != ''">
+            ${idName} int NOT NULL AUTO_INCREMENT ,
+        </if>
+        `trans_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        <if test="idName != null and idName != ''">
+            ,PRIMARY KEY (${idName})
+        </if>
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    </update>
+
+    <update id="exeAutoMove" parameterType="java.util.Map">
+        <if test='exeType == "add"'>
+            ALTER TABLE
+            <if test="tableName != null and tableName != ''">
+                ${tableName}
+            </if>
+            CHANGE
+            <if test="columnName != null and columnName != ''">
+                ${columnName}   ${columnName}
+            </if>
+            <if test="columnType != null and columnType != ''">
+                ${columnType}
+            </if>
+            <if test="isNullable != 'YES'">
+                NOT NULL
+            </if>
+            <if test="isNullable != 'NO'">
+                DEFAULT NULL
+            </if>
+            <if test="columnComment != null and columnComment != ''">
+                COMMENT '${columnComment}'
+            </if>
+            AUTO_INCREMENT
+        </if>
+        <if test='exeType == "drop"'>
+            ALTER TABLE
+            <if test="tableName != null and tableName != ''">
+                ${tableName}
+            </if>
+            CHANGE
+            <if test="columnName != null and columnName != ''">
+                ${columnName}   ${columnName}
+            </if>
+            <if test="columnType != null and columnType != ''">
+                ${columnType}
+            </if>
+            <if test="isNullable != 'YES'">
+                NOT NULL
+            </if>
+            <if test="isNullable != 'NO'">
+                DEFAULT NULL
+            </if>
+            <if test="columnComment != null and columnComment != ''">
+                COMMENT '${columnComment}'
+            </if>
+        </if>
+    </update>
+
+
+    <update id="dropKeys" parameterType="java.lang.String">
+        ALTER TABLE ${_parameter} DROP PRIMARY KEY
+    </update>
+
+    <update id="addKeys" parameterType="java.util.Map">
+        ALTER TABLE ${tableName} ADD PRIMARY KEY ${keys}
+    </update>
+
+    <select id="selectTablesList" parameterType="com.yinker.etl.trans.model.base.SyncTableInfo" resultType="java.lang.String">
+        SELECT TABLE_NAME FROM information_schema.TABLES
+        <where>
+            <if test="tableSchema != null and tableSchema != ''">
+                <![CDATA[and table_schema = #{tableSchema}]]>
+            </if>
+            <if test="tableName != null and tableName != ''">
+                <![CDATA[and TABLE_NAME = #{tableName}]]>
+            </if>
+        </where>
+    </select>
+
+
+    <update id="executeAlterSqlBanKey" parameterType="com.yinker.etl.trans.model.base.SyncTableInfo">
+        ALTER TABLE
+        <if test="tableName != null and tableName != ''">
+            ${tableName}
+        </if>
+        ADD COLUMN
+        <if test="columnName != null and columnName != ''">
+            ${columnName}
+        </if>
+        <if test="columnType != null and columnType != ''">
+            ${columnType}
+        </if>
+        <if test="isNullable != 'YES'">
+            NOT NULL
+        </if>
+        <if test="isNullable != 'NO'">
+            DEFAULT NULL
+        </if>
+        <if test="columnComment != null and columnComment != ''">
+            COMMENT '${columnComment}'
+        </if>
+    </update>
+
+    <update id="executeModifySqlBanKey" parameterType="com.yinker.etl.trans.model.base.SyncTableInfo">
+        ALTER TABLE
+        <if test="tableName != null and tableName != ''">
+            ${tableName}
+        </if>
+        MODIFY COLUMN
+        <if test="columnName != null and columnName != ''">
+            ${columnName}
+        </if>
+        <if test="columnType != null and columnType != ''">
+            ${columnType}
+        </if>
+        <if test="isNullable != 'YES'">
+            NOT NULL
+        </if>
+        <if test="isNullable != 'NO'">
+            DEFAULT NULL
+        </if>
+        <if test="columnComment != null and columnComment != ''">
+            COMMENT '${columnComment}'
+        </if>
+    </update>
+</mapper>
